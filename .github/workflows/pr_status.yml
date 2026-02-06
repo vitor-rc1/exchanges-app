@@ -19,4 +19,4 @@ jobs:
       - name: Install dependencies
         run: tuist install
       - name: Generate project
-        run: tuist generate
+        run: tuist generate --no-open
