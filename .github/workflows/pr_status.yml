@@ -6,19 +6,13 @@ on:
 
 jobs:  
   test:
-    name: Test ${{ matrix.target }}
+    name: Setup project
     runs-on: macos-26
-    strategy:
-      matrix:
-        target: [ "App", "DependencyInjection" ]
     permissions:
       pull-requests: write
       issues: write
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
-      - uses: jdx/mise-action@v3
-        with:
-          github_token: ${{ secrets.GITHUB_TOKEN }}
       - name: CI Setup
         run: make ci-setup
