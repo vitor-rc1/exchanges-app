@@ -1,2 +1,4 @@
-brew "tuist/tuist/tuist"
+tap "tuist/tuist"
+
+brew "tuist"
 brew "swiftlint"
