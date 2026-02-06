@@ -11,6 +11,9 @@ public let developmentEnv: [String: EnvironmentVariable] = [
 ]
 
 public let iOSDeploymentTarget: DeploymentTargets = .iOS("14.0")
+public let commonSettings: SettingsDictionary = [
+    "SWIFT_VERSION": "6.0"
+]
 
 public extension Project {
     static func templateModule(named moduleName: String,
@@ -89,6 +92,9 @@ public extension Project {
         return Project(
             name: moduleName,
             options: .options(automaticSchemesOptions: .disabled),
+            settings: .settings(
+                base: commonSettings
+            ),
             targets: selectedTargets,
             schemes: [
                 .scheme(
