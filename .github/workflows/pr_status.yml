@@ -17,6 +17,6 @@ jobs:
       - name: CI Setup
         run: make ci-setup
       - name: Install dependencies
-        run: tuist-install
+        run: tuist install
       - name: Generate project
-        run: tuist-generate
+        run: tuist generate
