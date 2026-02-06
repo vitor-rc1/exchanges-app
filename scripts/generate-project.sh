@@ -1,0 +1,2 @@
+tuist install
+tuist generate
