@@ -1,0 +1,8 @@
+generate-project:
+	@sh ./scripts/generate-project.sh
+
+local-setup:
+	@sh ./scripts/local-setup.sh
+
+ci-setup:
+	@sh ./scripts/ci-setup.sh
