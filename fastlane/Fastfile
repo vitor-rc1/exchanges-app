@@ -36,7 +36,7 @@ platform :ios do
       input_format: "profdata",
       build_directory: "reports/derived_data",
       output_directory: "reports/test_output",
-      source_directory: "src/Projects",
+      source_directory: "Projects",
       github: true
     )
   end

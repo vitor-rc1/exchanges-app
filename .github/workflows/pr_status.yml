@@ -56,11 +56,13 @@ jobs:
         run: tuist generate --no-open
       - name: Run tests for ${{ matrix.target }}
         run: exec fastlane tests target:${{ matrix.target }}
+      - name: Zip reports
+        run: zip -r reports.zip reports/
       - name: Upload test reports
         uses: actions/upload-artifact@v4
         with:
           name: test-reports-${{ matrix.target }}
-          path: reports/
+          path: reports.zip
 
   coverage:
     name: Code Coverage ${{ matrix.target }}
@@ -72,11 +74,15 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+      - name: Install Slather
+        run: gem install slather
       - name: Download test reports
         uses: actions/download-artifact@v4
         with:
           name: test-reports-${{ matrix.target }}
-          path: reports/
+          path: .
+      - name: Unzip reports
+        run: unzip reports.zip
       - name: Check code coverage
         run: fastlane tests_coverage target:${{ matrix.target }}
 
