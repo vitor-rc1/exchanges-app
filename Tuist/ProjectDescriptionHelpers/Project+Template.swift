@@ -15,6 +15,10 @@ public let commonSettings: SettingsDictionary = [
     "SWIFT_VERSION": "6.0"
 ]
 
+public let swiftLintScript: TargetScript = .post(path: "../../scripts/swiftlint.sh",
+                                                 arguments: "",
+                                                 name: "Swiftlint")
+
 public extension Project {
     static func templateModule(named moduleName: String,
                                targets: [ModuleTargets] = [.source, .interfaces, .test],
@@ -32,6 +36,9 @@ public extension Project {
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
                         buildableFolders: ["Interfaces/**"],
+                        scripts: [
+                            swiftLintScript
+                        ])
             )
         }
         
@@ -50,6 +57,9 @@ public extension Project {
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
                         buildableFolders: ["Sources/**"],
+                        scripts: [
+                            swiftLintScript
+                        ],
                         dependencies: moduleTargets)
             )
         }
