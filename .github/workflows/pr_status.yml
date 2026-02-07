@@ -6,6 +6,7 @@ on:
 
 jobs:
   paths-filter:
+    name: Verify targets to run tests
     runs-on: ubuntu-latest
     outputs:
       matrix: ${{ steps.matrix.outputs.matrix }}
@@ -55,3 +56,18 @@ jobs:
         run: tuist generate --no-open
       - name: Run tests for ${{ matrix.target }}
         run: exec fastlane tests target:${{ matrix.target }}
+
+  check-project:
+    name: Check project generation
+    runs-on: macos-26
+    needs: paths-filter
+    if: fromJson(needs.paths-filter.outputs.matrix).target[0] == null
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      - name: CI Setup
+        run: make ci-setup
+      - name: Install dependencies
+        run: tuist install
+      - name: Check project generation
+        run: tuist generate --no-open
