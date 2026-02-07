@@ -15,6 +15,10 @@ public let commonSettings: SettingsDictionary = [
     "SWIFT_VERSION": "6.0"
 ]
 
+public let swiftLintScript: TargetScript = .post(path: "../../scripts/swiftlint.sh",
+                                                 arguments: "",
+                                                 name: "Swiftlint")
+
 public extension Project {
     static func templateModule(named moduleName: String,
                                targets: [ModuleTargets] = [.source, .interfaces, .test],
@@ -31,7 +35,10 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased()).interfaces",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        sources: ["Interfaces/**"])
+                        buildableFolders: ["Interfaces/**"],
+                        scripts: [
+                            swiftLintScript
+                        ])
             )
         }
         
@@ -49,7 +56,10 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased())",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        sources: ["Sources/**"],
+                        buildableFolders: ["Sources/**"],
+                        scripts: [
+                            swiftLintScript
+                        ],
                         dependencies: moduleTargets)
             )
         }
@@ -69,7 +79,7 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased()).tests",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        sources: ["Tests/**"],
+                        buildableFolders: ["Tests/**"],
                         dependencies: testDeps)
             )
         }
@@ -82,7 +92,7 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased()).testing",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        sources: ["Testing/**"],
+                        buildableFolders: ["Testing/**"] ,
                         dependencies: [
                             .target(name: "\(moduleName)Interfaces")
                         ])

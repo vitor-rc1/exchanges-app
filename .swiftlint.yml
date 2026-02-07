@@ -1,0 +1,4 @@
+excluded:
+  - "**/Tests"
+  - "**/UITests"
+  - "**/Project.swift"

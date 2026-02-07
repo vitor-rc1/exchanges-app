@@ -23,6 +23,9 @@ let project = Project(
                 deploymentTargets: iOSDeploymentTarget,
                 infoPlist: "Info.plist",
                 buildableFolders: ["Sources", "Resources"],
+                scripts: [
+                    swiftLintScript
+                ],
                 dependencies: dependecies
                ),
         .target(name: "\(moduleName)Tests",
