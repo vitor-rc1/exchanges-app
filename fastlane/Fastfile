@@ -37,7 +37,7 @@ platform :ios do
       build_directory: "reports/derived_data",
       output_directory: "reports/test_output",
       source_directory: "Projects",
-      github: true
+      cobertura_xml: true
     )
   end
 end
