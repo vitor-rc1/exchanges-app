@@ -22,7 +22,7 @@ brew bundle install
 echo "✅ Brew dependencies installed."
 
 echo "Installing Bundles..."
-bundle install
+bundle install --with danger
 echo "✅ Bundles installed."
 
 echo "✅ Local setup completed."
