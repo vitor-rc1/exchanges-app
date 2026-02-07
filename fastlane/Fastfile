@@ -27,4 +27,17 @@ platform :ios do
               derived_data_path: "reports/derived_data", 
               output_directory: "reports/test_output",)
   end
+
+  lane :tests_coverage do |options|
+    target = options[:target] || "App"
+    slather(
+      proj: "Projects/#{target}/#{target}.xcodeproj",
+      scheme: target,
+      input_format: "profdata",
+      build_directory: "reports/derived_data",
+      output_directory: "reports/test_output",
+      source_directory: "src/Projects",
+      github: true
+    )
+  end
 end
