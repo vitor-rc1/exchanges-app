@@ -8,7 +8,8 @@ brew bundle install
 echo "✅ Brew dependencies installed."
 
 echo "Installing Bundles..."
-bundle install --without danger
+bundle config set without danger
+bundle install
 echo "✅ Bundles installed."
 
 echo "Selecting Xcode..."

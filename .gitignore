@@ -74,3 +74,4 @@ fastlane/README.md
 test_output
 derived_data
 Gemfile.lock
+.bundle
