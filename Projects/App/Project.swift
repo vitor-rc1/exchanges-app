@@ -50,7 +50,12 @@ let project = Project(
         .scheme(name: moduleName,
                 shared: true,
                 buildAction: .buildAction(targets: [.project(path: ".", target: moduleName)]),
-                testAction: .targets(["\(moduleName)Tests", "\(moduleName)UITests"]),
+                testAction: .targets([
+                    "\(moduleName)Tests",
+                    // Disabled UITests for now, as they are not yet implemented
+//                    "\(moduleName)UITests"
+                ]
+                                    ),
                 runAction: .runAction(configuration: .debug,
                                       executable: .project(path: ".", target: moduleName),
                                       arguments: .arguments(environmentVariables: developmentEnv)))
