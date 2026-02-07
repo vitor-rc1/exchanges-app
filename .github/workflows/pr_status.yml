@@ -56,6 +56,29 @@ jobs:
         run: tuist generate --no-open
       - name: Run tests for ${{ matrix.target }}
         run: exec fastlane tests target:${{ matrix.target }}
+      - name: Upload test reports
+        uses: actions/upload-artifact@v4
+        with:
+          name: test-reports-${{ matrix.target }}
+          path: reports/
+
+  coverage:
+    name: Code Coverage ${{ matrix.target }}
+    runs-on: macos-26
+    needs: [paths-filter, test]
+    if: fromJson(needs.paths-filter.outputs.matrix).target[0] != null
+    strategy:
+      matrix: ${{ fromJson(needs.paths-filter.outputs.matrix) }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      - name: Download test reports
+        uses: actions/download-artifact@v4
+        with:
+          name: test-reports-${{ matrix.target }}
+          path: reports/
+      - name: Check code coverage
+        run: fastlane tests_coverage target:${{ matrix.target }}
 
   check-project:
     name: Check project generation
