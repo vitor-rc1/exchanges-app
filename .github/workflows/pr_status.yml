@@ -56,10 +56,8 @@ jobs:
         run: tuist generate --no-open
       - name: Run tests for ${{ matrix.target }}
         run: exec fastlane tests target:${{ matrix.target }}
-      - name: Check code coverage
+      - name: Generate code coverage
         run: fastlane tests_coverage target:${{ matrix.target }}
-      - name: Rename reports folder
-        run: mv reports reports-${{ matrix.target }}
       - name: Zip reports
         run: zip -r reports-${{ matrix.target }}.zip reports-${{ matrix.target }}/
       - name: Upload test reports
@@ -79,8 +77,6 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
-      - name: Install Danger plugins
-        run: gem install danger-swift-slather
       - name: Download All Coverage Artifacts
         uses: actions/download-artifact@v4
         with:
@@ -90,11 +86,12 @@ jobs:
       - name: Unzip reports
         run: unzip "*.zip"
       - name: Run Danger
-        uses: danger/swift@3.22.1
+        uses: MeilCli/danger-action@v5
         with:
-            args: --failOnErrors --no-publish-check
+          danger_file: 'Dangerfile'
+          danger_id: 'danger-pr'
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          DANGER_GITHUB_API_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   check-project:
     name: Check project generation

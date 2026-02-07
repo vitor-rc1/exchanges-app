@@ -24,8 +24,8 @@ platform :ios do
               device: "iPhone 17 (26.1)",
               scheme: target, 
               code_coverage: true,
-              derived_data_path: "reports/derived_data", 
-              output_directory: "reports/test_output",)
+              derived_data_path: "reports-#{target}/derived_data", 
+              output_directory: "reports-#{target}/test_output",)
   end
 
   lane :tests_coverage do |options|
@@ -34,8 +34,8 @@ platform :ios do
       proj: "Projects/#{target}/#{target}.xcodeproj",
       scheme: target,
       input_format: "profdata",
-      build_directory: "reports/derived_data",
-      output_directory: "reports/test_output",
+      build_directory: "reports-#{target}/derived_data",
+      output_directory: "reports-#{target}/test_output",
       source_directory: "Projects",
       cobertura_xml: true
     )
