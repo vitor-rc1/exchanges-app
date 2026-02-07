@@ -4,10 +4,43 @@ on:
   pull_request:
     branches: [ "develop", "main" ]
 
-jobs:  
+jobs:
+  paths-filter:
+    runs-on: ubuntu-latest
+    outputs:
+      matrix: ${{ steps.matrix.outputs.matrix }}
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4.1.1
+      - name: Check for file changes
+        uses: dorny/paths-filter@v2
+        id: filter
+        with:
+          filters: |
+            app:
+              - 'Projects/App/**'
+      - name: Generate matrix
+        id: matrix
+        run: |
+          targets=()
+          if [ "${{ steps.filter.outputs.app }}" == "true" ]; then
+            targets+=("App")
+          fi
+          
+          if [ ${#targets[@]} -gt 0 ]; then
+            matrix="{\"target\": [$(printf '"%s",' "${targets[@]}" | sed 's/,$//')]}"
+          else
+            matrix='{"target": []}'
+          fi
+          echo "matrix=$matrix" >> $GITHUB_OUTPUT
+  
   test:
-    name: Setup project
+    name: Test ${{ matrix.target }}
     runs-on: macos-26
+    needs: paths-filter
+    if: fromJson(needs.paths-filter.outputs.matrix).target[0] != null
+    strategy:
+      matrix: ${{ fromJson(needs.paths-filter.outputs.matrix) }}
     permissions:
       pull-requests: write
       issues: write
@@ -20,3 +53,5 @@ jobs:
         run: tuist install
       - name: Generate project
         run: tuist generate --no-open
+      - name: Run tests for ${{ matrix.target }}
+        run: exec fastlane tests target:${{ matrix.target }}
