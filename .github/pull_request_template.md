@@ -1,5 +1,5 @@
 ## Description
-<!-- Describe the changes made in this PR -->
+Description
 
 ## Type of Change
 - [ ] Bug fix (non-breaking change which fixes an issue)
