@@ -8,15 +8,23 @@
 
 import Testing
 import DependencyInjectionInterfaces
+import NetworkingInterfaces
 @testable import App
 
 @Suite
 @MainActor
 struct AppDelegateTests {
     @Test("GIVEN AppDelegate initialize THEN it should set injector")
-    func example() async throws {
+    func setInjectot() async throws {
         #expect(throws: Never.self) {
             _ = SharedContainer.shared.resolver()
+        }
+    }
+
+    @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI Network")
+    func NetworkRegister() async throws {
+        #expect(throws: Never.self) {
+            let _: NetworkServiceProtocol = SharedContainer.shared.resolver().resolve()
         }
     }
 }

@@ -7,7 +7,9 @@ let dependecies: [TargetDependency] = [
     .project(target: "DependencyInjection",
              path: "../DependencyInjection"),
     .project(target: "DependencyInjectionInterfaces",
-             path: "../DependencyInjection")
+             path: "../DependencyInjection"),
+    .external(name: "Networking"),
+    .external(name: "NetworkingInterfaces"),
 ]
 
 let testDependencies: [TargetDependency] = [

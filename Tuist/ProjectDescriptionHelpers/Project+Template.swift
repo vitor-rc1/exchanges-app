@@ -10,7 +10,7 @@ public let developmentEnv: [String: EnvironmentVariable] = [
     "CM_API_BASE_URL": cmApiBaseURL,
 ]
 
-public let iOSDeploymentTarget: DeploymentTargets = .iOS("14.0")
+public let iOSDeploymentTarget: DeploymentTargets = .iOS("15.0")
 public let commonSettings: SettingsDictionary = [
     "SWIFT_VERSION": "6.0"
 ]
