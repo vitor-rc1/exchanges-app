@@ -59,7 +59,7 @@ jobs:
       - name: Generate code coverage
         run: fastlane tests_coverage target:${{ matrix.target }}
       - name: Zip reports
-        run: zip -r reports-${{ matrix.target }}.zip reports-${{ matrix.target }}/
+        run: zip -r reports-${{ matrix.target }}.zip reports-${{ matrix.target }}/test_output/
       - name: Upload test reports
         uses: actions/upload-artifact@v4
         with:
@@ -84,7 +84,7 @@ jobs:
           pattern: test-reports-*
           merge-multiple: true
       - name: Unzip reports
-        run: unzip "*.zip"
+        run: cd all-reports && unzip "*.zip"
       - name: Run Danger
         uses: MeilCli/danger-action@v5
         with:
