@@ -8,7 +8,7 @@ brew bundle install
 echo "✅ Brew dependencies installed."
 
 echo "Installing Bundles..."
-bundle config set without danger
+bundle config set without local
 bundle install
 echo "✅ Bundles installed."
 
