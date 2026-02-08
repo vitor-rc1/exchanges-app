@@ -22,6 +22,8 @@ jobs:
               - 'Projects/App/**'
             dependency_injection:
               - 'Projects/DependencyInjection/**'
+            design_system:
+              - 'Projects/DesignSystem/**'
       - name: Generate matrix
         id: matrix
         run: |
@@ -32,6 +34,10 @@ jobs:
 
           if [ "${{ steps.filter.outputs.dependency_injection }}" == "true" ]; then
             targets+=("DependencyInjection")
+          fi
+
+          if [ "${{ steps.filter.outputs.design_system }}" == "true" ]; then
+            targets+=("DesignSystem")
           fi
           
           if [ ${#targets[@]} -gt 0 ]; then
