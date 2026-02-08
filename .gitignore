@@ -68,3 +68,10 @@ Derived/
 
 ### Tuist managed dependencies ###
 Tuist/.build
+
+fastlane/report.xml
+fastlane/README.md
+test_output
+derived_data
+Gemfile.lock
+.bundle
