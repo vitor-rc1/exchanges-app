@@ -24,6 +24,8 @@ jobs:
               - 'Projects/DependencyInjection/**'
             design_system:
               - 'Projects/DesignSystem/**'
+            home:
+              - 'Projects/Home/**'
       - name: Generate matrix
         id: matrix
         run: |
@@ -38,6 +40,10 @@ jobs:
 
           if [ "${{ steps.filter.outputs.design_system }}" == "true" ]; then
             targets+=("DesignSystem")
+          fi
+
+          if [ "${{ steps.filter.outputs.home }}" == "true" ]; then
+            targets+=("Home")
           fi
           
           if [ ${#targets[@]} -gt 0 ]; then

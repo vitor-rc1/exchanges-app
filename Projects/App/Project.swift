@@ -7,11 +7,25 @@ let dependecies: [TargetDependency] = [
     .project(target: "DependencyInjection",
              path: "../DependencyInjection"),
     .project(target: "DependencyInjectionInterfaces",
-             path: "../DependencyInjection")
+             path: "../DependencyInjection"),
+    .project(target: "Home",
+             path: "../Home"),
+    .project(target: "HomeInterfaces",
+             path: "../Home"),
+    .project(target: "NavigationInterfaces",
+             path: "../Navigation"),
+    .external(name: "Networking"),
+    .external(name: "NetworkingInterfaces"),
 ]
 
 let testDependencies: [TargetDependency] = [
     .target(name: moduleName),
+    .project(target: "DependencyInjectionTesting",
+             path: "../DependencyInjection"),
+    .project(target: "HomeTesting",
+             path: "../Home"),
+    .project(target: "NavigationTesting",
+             path: "../Navigation"),
 ]
 
 let project = Project(
@@ -59,8 +73,8 @@ let project = Project(
                     "\(moduleName)Tests",
                     // Disabled UITests for now, as they are not yet implemented
 //                    "\(moduleName)UITests"
-                ]
-                                    ),
+                ],
+                                     arguments: .arguments(environmentVariables: ["IS_TESTING": "true"])),
                 runAction: .runAction(configuration: .debug,
                                       executable: .project(path: ".", target: moduleName),
                                       arguments: .arguments(environmentVariables: developmentEnv)))

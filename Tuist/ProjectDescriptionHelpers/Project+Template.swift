@@ -10,7 +10,7 @@ public let developmentEnv: [String: EnvironmentVariable] = [
     "CM_API_BASE_URL": cmApiBaseURL,
 ]
 
-public let iOSDeploymentTarget: DeploymentTargets = .iOS("14.0")
+public let iOSDeploymentTarget: DeploymentTargets = .iOS("15.0")
 public let commonSettings: SettingsDictionary = [
     "SWIFT_VERSION": "6.0"
 ]
@@ -24,6 +24,7 @@ public extension Project {
                                targets: [ModuleTargets] = [.source, .interfaces, .test],
                                dependencies: [TargetDependency] = [],
                                testDependencies: [TargetDependency] = [],
+                               interfaceDependecies: [TargetDependency] = [],
                                shouldSetEnvVars: Bool = false) -> Project {
         var selectedTargets: [Target] = []
         
@@ -38,7 +39,8 @@ public extension Project {
                         buildableFolders: ["Interfaces"],
                         scripts: [
                             swiftLintScript
-                        ])
+                        ],
+                        dependencies: interfaceDependecies)
             )
         }
         
