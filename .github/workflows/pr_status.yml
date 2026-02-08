@@ -77,6 +77,9 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4.1.1
+      - name: Install Danger
+        run: |
+          gem install danger
       - name: Download All Coverage Artifacts
         uses: actions/download-artifact@v4
         with:
@@ -86,7 +89,7 @@ jobs:
       - name: Unzip reports
         run: cd all-reports && unzip "*.zip"
       - name: Run Danger
-        uses: MeilCli/danger-action@v5
+        uses: MeilCli/danger-action@v6
         with:
           danger_file: 'Dangerfile'
           danger_id: 'danger-pr'
