@@ -20,7 +20,7 @@ jobs:
           filters: |
             app:
               - 'Projects/App/**'
-            dependency_injection
+            dependency_injection:
               - 'Projects/DependencyInjection/**'
       - name: Generate matrix
         id: matrix
