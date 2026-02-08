@@ -39,7 +39,11 @@ platform :ios do
       source_directory: "Projects",
       ignore: [
         "**/Derived/**",
-        "**/derived_data/**"
+        "**/derived_data/**",
+        "**/Interfaces/**",
+        "**/Tests/**",
+        "**/Testing/**",
+        "Tuist/**",
       ],
       cobertura_xml: true
     )

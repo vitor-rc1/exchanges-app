@@ -11,5 +11,7 @@ import PackageDescription
 
 let package = Package(
     name: "ExchangesApp",
-    dependencies: []
+    dependencies: [
+        .package(url: "https://github.com/Swinject/Swinject.git", from: "2.9.1"),
+    ]
 )

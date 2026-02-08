@@ -3,7 +3,12 @@ import ProjectDescriptionHelpers
 
 let moduleName = "App"
 
-let dependecies: [TargetDependency] = []
+let dependecies: [TargetDependency] = [
+    .project(target: "DependencyInjection",
+             path: "../DependencyInjection"),
+    .project(target: "DependencyInjectionInterfaces",
+             path: "../DependencyInjection")
+]
 
 let testDependencies: [TargetDependency] = [
     .target(name: moduleName),
