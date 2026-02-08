@@ -75,3 +75,4 @@ test_output
 derived_data
 Gemfile.lock
 .bundle
+reports-*/
