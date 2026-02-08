@@ -6,10 +6,11 @@
 //
 //
 
+import HomeInterfaces
 import NavigationInterfaces
 import UIKit
 
-public final class CoordinatorSpy: Coordinator {
+public final class HomeCoordinatingSpy: HomeCoordinating {
     public enum Method {
         case start
     }

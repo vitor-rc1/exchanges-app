@@ -32,7 +32,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
     func application(_ application: UIApplication, didDiscardSceneSessions sceneSessions: Set<UISceneSession>) {}
 
     @MainActor
-    private func setupDependencies() {
+    func setupDependencies() {
         let injector = Injector()
         SharedContainer.shared.setInjector(injector)
 

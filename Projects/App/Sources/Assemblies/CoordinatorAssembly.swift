@@ -6,8 +6,9 @@
 //
 //
 import DependencyInjectionInterfaces
-import NetworkingInterfaces
-import Networking
+import HomeInterfaces
+import Home
+import NavigationInterfaces
 
 import UIKit
 
@@ -22,6 +23,13 @@ public struct CoordinatorAssembly {
     public func register() {
         injector.register(AppCoordinating.self) { (_, arg: UINavigationController) in
             AppCoordinator(navigationController: arg)
+        }
+
+        injector.register(HomeCoordinating.self) { (_, arg: (UINavigationController, Coordinator?)) in
+            let (navigationController, parentCoordinator) = arg
+
+            return HomeCoordinator(parentCoordinator: parentCoordinator,
+                                   navigationController: navigationController)
         }
     }
 }

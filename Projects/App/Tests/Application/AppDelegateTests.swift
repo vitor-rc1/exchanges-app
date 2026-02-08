@@ -9,6 +9,8 @@
 import Testing
 import DependencyInjectionInterfaces
 import NetworkingInterfaces
+import HomeInterfaces
+import NavigationInterfaces
 import UIKit
 
 @testable import App
@@ -16,6 +18,10 @@ import UIKit
 @Suite
 @MainActor
 struct AppDelegateTests {
+    init() {
+        _ = AppDelegate()
+    }
+
     @Test("GIVEN AppDelegate initialize THEN it should set injector")
     func setInjectot() async throws {
         #expect(throws: Never.self) {
@@ -38,6 +44,33 @@ struct AppDelegateTests {
                 .shared
                 .resolver()
                 .resolve(AppCoordinating.self, argument: navigation)
+        }
+    }
+
+    @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI AppCoordinating")
+    func appCoordinatingRegister() async throws {
+        #expect(throws: Never.self) {
+            let navigation = UINavigationController()
+            _ = SharedContainer
+                .shared
+                .resolver()
+                .resolve(AppCoordinating.self, argument: navigation)
+        }
+    }
+
+    @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI HomeCoordinating")
+    func homeCoordinatorRegister() async throws {
+        #expect(throws: Never.self) {
+            let navigation = UINavigationController()
+            let parentCoordinator: Coordinator? = SharedContainer
+                .shared
+                .resolver()
+                .resolve(AppCoordinating.self, argument: navigation)
+            
+            _ = SharedContainer
+                .shared
+                .resolver()
+                .resolve(HomeCoordinating.self, argument: (navigation, parentCoordinator))
         }
     }
 }

@@ -6,7 +6,9 @@
 //
 //
 
+import DependencyInjectionInterfaces
 import HomeInterfaces
+import NavigationInterfaces
 import UIKit
 
 protocol AppCoordinating: Coordinator {}
@@ -22,9 +24,12 @@ final class AppCoordinator: AppCoordinating {
     }
 
     func start() {
-//        let viewModel = HomeViewModel()
-//        viewModel.coordinatorDelegate = self
-//        let homeVC = HomeViewController(viewModel: viewModel)
-//        navigationController.pushViewController(homeVC, animated: false)
+        let resolver = SharedContainer.shared.resolver()
+        let arg: (UINavigationController, Coordinator?) = (navigationController, self)
+
+        let homeCoordinator = resolver.resolve(HomeCoordinating.self,
+                                               argument: arg)
+
+        homeCoordinator.start()
     }
 }

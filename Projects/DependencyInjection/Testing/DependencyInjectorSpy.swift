@@ -11,7 +11,7 @@ import Foundation
 public final class DependencyInjectorSpy: DependencyInjector {
     public init() {}
 
-    enum Method {
+    public enum Method {
         case register
         case registerWithArgument
         case resolve
@@ -22,7 +22,7 @@ public final class DependencyInjectorSpy: DependencyInjector {
     private var registeredServices: [String: Any] = [:]
     private var registeredServicesWithArgument: [String: Any] = [:]
 
-    var calledMethods: [Method] = []
+    public var calledMethods: [Method] = []
 
     private func typeIdentifier<T>(_ type: T.Type) -> String {
         return String(reflecting: type)

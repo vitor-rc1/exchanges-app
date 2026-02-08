@@ -8,14 +8,24 @@ let dependecies: [TargetDependency] = [
              path: "../DependencyInjection"),
     .project(target: "DependencyInjectionInterfaces",
              path: "../DependencyInjection"),
+    .project(target: "Home",
+             path: "../Home"),
     .project(target: "HomeInterfaces",
              path: "../Home"),
+    .project(target: "NavigationInterfaces",
+             path: "../Navigation"),
     .external(name: "Networking"),
     .external(name: "NetworkingInterfaces"),
 ]
 
 let testDependencies: [TargetDependency] = [
     .target(name: moduleName),
+    .project(target: "DependencyInjectionTesting",
+             path: "../DependencyInjection"),
+    .project(target: "HomeTesting",
+             path: "../Home"),
+    .project(target: "NavigationTesting",
+             path: "../Navigation"),
 ]
 
 let project = Project(
