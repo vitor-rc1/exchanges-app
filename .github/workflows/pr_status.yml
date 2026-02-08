@@ -20,12 +20,18 @@ jobs:
           filters: |
             app:
               - 'Projects/App/**'
+            dependency_injection
+              - 'Projects/DependencyInjection/**'
       - name: Generate matrix
         id: matrix
         run: |
           targets=()
           if [ "${{ steps.filter.outputs.app }}" == "true" ]; then
             targets+=("App")
+          fi
+
+          if [ "${{ steps.filter.outputs.dependency_injection }}" == "true" ]; then
+            targets+=("DependencyInjection")
           fi
           
           if [ ${#targets[@]} -gt 0 ]; then
