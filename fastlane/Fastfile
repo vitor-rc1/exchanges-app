@@ -37,6 +37,9 @@ platform :ios do
       build_directory: "reports-#{target}/derived_data",
       output_directory: "reports-#{target}/test_output",
       source_directory: "Projects",
+      ignore: [
+        "**/Derived/**"
+      ],
       cobertura_xml: true
     )
   end
