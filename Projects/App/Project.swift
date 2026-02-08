@@ -8,6 +8,8 @@ let dependecies: [TargetDependency] = [
              path: "../DependencyInjection"),
     .project(target: "DependencyInjectionInterfaces",
              path: "../DependencyInjection"),
+    .project(target: "HomeInterfaces",
+             path: "../Home"),
     .external(name: "Networking"),
     .external(name: "NetworkingInterfaces"),
 ]
