@@ -37,5 +37,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         SharedContainer.shared.setInjector(injector)
 
         NetworkAssembly(injector: injector).register()
+        CoordinatorAssembly(injector: injector).register()
     }
 }

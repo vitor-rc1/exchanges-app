@@ -9,6 +9,8 @@
 import Testing
 import DependencyInjectionInterfaces
 import NetworkingInterfaces
+import UIKit
+
 @testable import App
 
 @Suite
@@ -22,9 +24,20 @@ struct AppDelegateTests {
     }
 
     @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI Network")
-    func NetworkRegister() async throws {
+    func networkRegister() async throws {
         #expect(throws: Never.self) {
             let _: NetworkServiceProtocol = SharedContainer.shared.resolver().resolve()
+        }
+    }
+
+    @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI Network")
+    func appCoordinatorRegister() async throws {
+        #expect(throws: Never.self) {
+            let navigation = UINavigationController()
+            _ = SharedContainer
+                .shared
+                .resolver()
+                .resolve(AppCoordinating.self, argument: navigation)
         }
     }
 }
