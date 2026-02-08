@@ -38,6 +38,7 @@ struct ErrorViewSnapshotTest {
                  buttonText: String? = nil) -> ErrorView {
         let sut = ErrorView()
         sut.frame = CGRect(x: 0, y: 0, width: 402, height: 874)
+        sut.backgroundColor = .white
         sut.configure(title: title,
                       message: message,
                       code: code,

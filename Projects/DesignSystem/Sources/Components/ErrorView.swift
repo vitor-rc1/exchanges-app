@@ -46,7 +46,7 @@ public final class ErrorView: UIView {
         button.setImage(image, for: .normal)
         button.setTitle("Try again", for: .normal)
         button.titleLabel?.font = .preferredFont(forTextStyle: .body)
-        button.tintColor = .white
+        button.tintColor = .systemBlue
         button.backgroundColor = .systemBlue.withAlphaComponent(0.15)
         button.layer.cornerRadius = DSSpacings.medium.rawValue
         button.contentEdgeInsets = UIEdgeInsets(
