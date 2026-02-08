@@ -24,6 +24,7 @@ public extension Project {
                                targets: [ModuleTargets] = [.source, .interfaces, .test],
                                dependencies: [TargetDependency] = [],
                                testDependencies: [TargetDependency] = [],
+                               interfaceDependecies: [TargetDependency] = [],
                                shouldSetEnvVars: Bool = false) -> Project {
         var selectedTargets: [Target] = []
         
@@ -38,7 +39,8 @@ public extension Project {
                         buildableFolders: ["Interfaces"],
                         scripts: [
                             swiftLintScript
-                        ])
+                        ],
+                        dependencies: interfaceDependecies)
             )
         }
         
