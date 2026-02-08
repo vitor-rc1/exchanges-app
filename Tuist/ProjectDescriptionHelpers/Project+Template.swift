@@ -35,7 +35,7 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased()).interfaces",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        buildableFolders: ["Interfaces/**"],
+                        buildableFolders: ["Interfaces"],
                         scripts: [
                             swiftLintScript
                         ])
@@ -56,7 +56,7 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased())",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        buildableFolders: ["Sources/**"],
+                        buildableFolders: ["Sources"],
                         scripts: [
                             swiftLintScript
                         ],
@@ -79,7 +79,7 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased()).tests",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        buildableFolders: ["Tests/**"],
+                        buildableFolders: ["Tests"],
                         dependencies: testDeps)
             )
         }
@@ -92,7 +92,7 @@ public extension Project {
                         bundleId: "com.vrc.\(moduleName.lowercased()).testing",
                         deploymentTargets: iOSDeploymentTarget,
                         infoPlist: .default,
-                        buildableFolders: ["Testing/**"] ,
+                        buildableFolders: ["Testing"] ,
                         dependencies: [
                             .target(name: "\(moduleName)Interfaces")
                         ])
