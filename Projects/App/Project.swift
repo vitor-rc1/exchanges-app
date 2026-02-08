@@ -63,8 +63,8 @@ let project = Project(
                     "\(moduleName)Tests",
                     // Disabled UITests for now, as they are not yet implemented
 //                    "\(moduleName)UITests"
-                ]
-                                    ),
+                ],
+                                     arguments: .arguments(environmentVariables: ["IS_TESTING": "true"])),
                 runAction: .runAction(configuration: .debug,
                                       executable: .project(path: ".", target: moduleName),
                                       arguments: .arguments(environmentVariables: developmentEnv)))
