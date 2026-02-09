@@ -37,6 +37,28 @@ public final class DetailCoordinator: DetailCoordinating {
     // MARK: - DetailCoordinating
 
     public func start() {
+        let resolver = SharedContainer.shared.resolver()
+        let networkService: NetworkServiceProtocol = resolver.resolve()
+        let detailService = DetailService(networkService: networkService)
+        let viewModel = DetailViewModel(service: detailService)
+        if let exchange {
+            viewModel.configure(with: exchange)
+        }
+        if let exchangeId {
+            viewModel.configure(with: exchangeId)
+        }
 
+        viewModel.coordinatorDelegate = self
+        let viewController = DetailViewController(viewModel: viewModel)
+
+        navigationController.pushViewController(viewController, animated: true)
+    }
+}
+
+// MARK: - DetailViewModelCoordinatorDelegate
+
+extension DetailCoordinator: DetailViewModelCoordinatorDelegate {
+    public func didRequestOpenURL(_ url: URL) {
+        UIApplication.shared.open(url)
     }
 }
