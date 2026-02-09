@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct ExchangeSummary: Equatable, Codable {
+public struct ExchangeSummary: Sendable, Equatable, Codable {
     public let id: Int
     public let name: String
 

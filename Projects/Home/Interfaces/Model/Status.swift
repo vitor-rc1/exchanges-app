@@ -14,6 +14,18 @@ public struct Status: Equatable {
     let errorMessage: String?
     let elapsed: Int
     let creditCount: Int
+
+    public init(timestamp: String,
+                errorCode: Int? = nil,
+                errorMessage: String? = nil,
+                elapsed: Int,
+                creditCount: Int) {
+        self.timestamp = timestamp
+        self.errorCode = errorCode
+        self.errorMessage = errorMessage
+        self.elapsed = elapsed
+        self.creditCount = creditCount
+    }
 }
 
 extension Status: Codable {
