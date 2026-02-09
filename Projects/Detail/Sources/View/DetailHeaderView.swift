@@ -26,7 +26,7 @@ final class DetailHeaderView: UIView {
         imageView.layer.cornerRadius = 11
         imageView.clipsToBounds = true
         imageView.tintColor = .systemGray3
-        imageView.image = UIImage(systemName: "photo.circle.fill")
+        imageView.image = UIImage(systemName: "bahtsign.bank.building.fill")
         return imageView
     }()
 
