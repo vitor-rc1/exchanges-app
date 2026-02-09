@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HomeInterfaces
 import NetworkingInterfaces
 
 enum ServiceError: Error, Equatable {

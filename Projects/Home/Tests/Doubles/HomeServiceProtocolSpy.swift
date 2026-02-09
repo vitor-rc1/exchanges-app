@@ -7,6 +7,8 @@
 //
 
 import Foundation
+import HomeInterfaces
+
 @testable import Home
 
 @MainActor

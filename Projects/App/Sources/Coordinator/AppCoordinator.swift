@@ -29,7 +29,7 @@ final class AppCoordinator: AppCoordinating {
 
         let homeCoordinator = resolver.resolve(HomeCoordinating.self,
                                                argument: arg)
-
+        children.append(homeCoordinator)
         homeCoordinator.start()
     }
 }

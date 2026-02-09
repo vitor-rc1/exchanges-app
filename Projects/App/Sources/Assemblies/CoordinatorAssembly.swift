@@ -6,6 +6,8 @@
 //
 //
 import DependencyInjectionInterfaces
+import Detail
+import DetailInterfaces
 import HomeInterfaces
 import Home
 import NavigationInterfaces
@@ -30,6 +32,22 @@ public struct CoordinatorAssembly {
 
             return HomeCoordinator(parentCoordinator: parentCoordinator,
                                    navigationController: navigationController)
+        }
+
+        injector.register(DetailCoordinating.self) { (_, arg: (UINavigationController, Coordinator?, Exchange)) in
+            let (navigationController, parentCoordinator, exchange) = arg
+
+            return DetailCoordinator(parentCoordinator: parentCoordinator,
+                                     navigationController: navigationController,
+                                     exchange: exchange)
+        }
+
+        injector.register(DetailCoordinating.self) { (_, arg: (UINavigationController, Coordinator?, Int)) in
+            let (navigationController, parentCoordinator, exchangeId) = arg
+
+            return DetailCoordinator(parentCoordinator: parentCoordinator,
+                                     navigationController: navigationController,
+                                     exchangeId: exchangeId)
         }
     }
 }

@@ -26,6 +26,8 @@ jobs:
               - 'Projects/DesignSystem/**'
             home:
               - 'Projects/Home/**'
+            detail:
+              - 'Projects/Detail/**'
       - name: Generate matrix
         id: matrix
         run: |
@@ -44,6 +46,10 @@ jobs:
 
           if [ "${{ steps.filter.outputs.home }}" == "true" ]; then
             targets+=("Home")
+          fi
+
+          if [ "${{ steps.filter.outputs.detail }}" == "true" ]; then
+            targets+=("Detail")
           fi
           
           if [ ${#targets[@]} -gt 0 ]; then

@@ -6,6 +6,7 @@
 //
 //
 
+import HomeInterfaces
 import Foundation
 
 protocol HomeServiceProtocol: AnyObject, Sendable {

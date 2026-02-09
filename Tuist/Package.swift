@@ -5,7 +5,11 @@ import PackageDescription
     import ProjectDescription
 
     let packageSettings = PackageSettings(
-        productTypes: [:]
+        productTypes: [
+            "Swinject": .framework,
+            "NetworkingInterfaces": .framework,
+            "Networking": .framework
+        ]
     )
 #endif
 
