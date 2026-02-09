@@ -1,16 +1,9 @@
-//
-//
-//  Created by Vitor Conceicao.
-//
-//  github.com/vitor-rc1
-//
-//
-
-import HomeInterfaces
-import NavigationInterfaces
 import UIKit
+import DetailInterfaces
+import NavigationInterfaces
 
-public final class HomeCoordinatingSpy: HomeCoordinating {
+@MainActor
+public final class DetailCoordinatingSpy: DetailCoordinating {
     public enum Method: Equatable {
         case start
     }

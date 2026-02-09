@@ -19,6 +19,6 @@ let interfaceDependecies: [TargetDependency] = [
 ]
 
 let project = Project.templateModule(named: moduleName,
-                                     targets: [.source, .interfaces, .test],
+                                     targets: [.source, .interfaces, .test, .testing],
                                      dependencies: dependecies,
                                      interfaceDependecies: interfaceDependecies)
