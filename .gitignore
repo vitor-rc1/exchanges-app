@@ -76,3 +76,4 @@ derived_data
 Gemfile.lock
 .bundle
 reports-*/
+.env
