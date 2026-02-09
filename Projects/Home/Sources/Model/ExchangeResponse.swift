@@ -7,6 +7,7 @@
 //
 
 import Foundation
+import HomeInterfaces
 
 struct ExchangeResponse<T: Codable>: Codable {
     let status: Status

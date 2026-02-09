@@ -5,8 +5,9 @@
 //  github.com/vitor-rc1
 //
 //
-    
+
 import Foundation
+import HomeInterfaces
 
 @MainActor
 protocol HomeViewModelCoordinatorDelegate: AnyObject {

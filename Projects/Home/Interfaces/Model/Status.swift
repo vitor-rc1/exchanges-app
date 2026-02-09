@@ -8,7 +8,7 @@
 
 import Foundation
 
-struct Status: Equatable {
+public struct Status: Equatable {
     let timestamp: String
     let errorCode: Int?
     let errorMessage: String?
@@ -17,7 +17,7 @@ struct Status: Equatable {
 }
 
 extension Status: Codable {
-    enum CodingKeys: String, CodingKey {
+    public enum CodingKeys: String, CodingKey {
         case timestamp
         case errorCode = "error_code"
         case errorMessage = "error_message"

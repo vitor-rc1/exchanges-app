@@ -20,7 +20,7 @@ public final class CoordinatorSpy: Coordinator {
     public var navigationController: UINavigationController
 
     public init(parentCoordinator: Coordinator? = nil,
-                children: [Coordinator],
+                children: [Coordinator] = [],
                 navigationController: UINavigationController) {
         self.parentCoordinator = parentCoordinator
         self.children = children

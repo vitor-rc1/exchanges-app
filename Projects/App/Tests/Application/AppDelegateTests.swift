@@ -8,9 +8,11 @@
 
 import Testing
 import DependencyInjectionInterfaces
-import NetworkingInterfaces
+import DetailInterfaces
 import HomeInterfaces
 import NavigationInterfaces
+import NavigationTesting
+import NetworkingInterfaces
 import UIKit
 
 @testable import App
@@ -62,15 +64,45 @@ struct AppDelegateTests {
     func homeCoordinatorRegister() async throws {
         #expect(throws: Never.self) {
             let navigation = UINavigationController()
-            let parentCoordinator: Coordinator? = SharedContainer
-                .shared
-                .resolver()
-                .resolve(AppCoordinating.self, argument: navigation)
-            
+            let parentCoordinator: Coordinator? = CoordinatorSpy(children: [],
+                                                                 navigationController: navigation)
+
             _ = SharedContainer
                 .shared
                 .resolver()
                 .resolve(HomeCoordinating.self, argument: (navigation, parentCoordinator))
+        }
+    }
+
+    @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI DetailCoordinating with Exchange")
+    func detailCoordinatorRegister() async throws {
+        #expect(throws: Never.self) {
+            let navigation = UINavigationController()
+            let exchange = Exchange(summary: .init(id: 0, name: "exchange"))
+
+            let parentCoordinator: Coordinator? = CoordinatorSpy(children: [],
+                                                                 navigationController: navigation)
+
+            _ = SharedContainer
+                .shared
+                .resolver()
+                .resolve(DetailCoordinating.self, argument: (navigation, parentCoordinator, exchange))
+        }
+    }
+
+    @Test("GIVEN AppDelegate initialize THEN it SHOULD register DI DetailCoordinating with Exchange identifier")
+    func detailWithIdentifierCoordinatorRegister() async throws {
+        #expect(throws: Never.self) {
+            let navigation = UINavigationController()
+            let exchangeId: Int = 21
+
+            let parentCoordinator: Coordinator? = CoordinatorSpy(children: [],
+                                                                 navigationController: navigation)
+
+            _ = SharedContainer
+                .shared
+                .resolver()
+                .resolve(DetailCoordinating.self, argument: (navigation, parentCoordinator, exchangeId))
         }
     }
 }

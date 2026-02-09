@@ -7,6 +7,7 @@
 //
 
 import DependencyInjectionInterfaces
+import DetailInterfaces
 import HomeInterfaces
 import NavigationInterfaces
 import NetworkingInterfaces
@@ -35,5 +36,14 @@ public final class HomeCoordinator: HomeCoordinating {
 }
 
 extension HomeCoordinator: HomeViewModelCoordinatorDelegate {
-    func navigateToDetails(of exchange: Exchange) {}
+    func navigateToDetails(of exchange: Exchange) {
+        let resolver = SharedContainer.shared.resolver()
+        let arg: (UINavigationController, Coordinator?, Exchange) = (navigationController, self, exchange)
+
+        let detailCoordinator = resolver.resolve(DetailCoordinating.self,
+                                                 argument: arg)
+
+        children.append(detailCoordinator)
+        detailCoordinator.start()
+    }
 }
