@@ -18,7 +18,15 @@ let interfaceDependecies: [TargetDependency] = [
              path: "../Navigation"),
 ]
 
+let testsDependecies: [TargetDependency] = [
+    .project(target: "DependencyInjectionTesting",
+             path: "../DependencyInjection"),
+    .project(target: "NavigationTesting",
+             path: "../Navigation"),
+]
+
 let project = Project.templateModule(named: moduleName,
                                      targets: [.source, .interfaces, .test, .testing],
                                      dependencies: dependecies,
+                                     testDependencies: testsDependecies,
                                      interfaceDependecies: interfaceDependecies)
