@@ -4,10 +4,12 @@ public enum ModuleTargets: Equatable {
     case test, testing, interfaces, app, source
 }
 
-let cmApiBaseURL = EnvironmentVariable(stringLiteral: "https://pro-api.coinmarketcap.com")
+let cmApiBaseURL =  Environment.cmApiBaseUrl.getString(default: "")
+let cmApiKey = Environment.cmApiKey.getString(default: "")
 
-public let developmentEnv: [String: EnvironmentVariable] = [
-    "CM_API_BASE_URL": cmApiBaseURL,
+public let envs: [String: EnvironmentVariable] = [
+    "CM_API_BASE_URL": EnvironmentVariable(stringLiteral: cmApiBaseURL),
+    "CM_API_KEY": EnvironmentVariable(stringLiteral: cmApiKey)
 ]
 
 public let iOSDeploymentTarget: DeploymentTargets = .iOS("15.0")
@@ -116,7 +118,7 @@ public extension Project {
                     testAction: targets.contains(.test) ? .targets(["\(moduleName)Tests"]) : nil,
                     runAction: .runAction(
                         configuration: .debug,
-                        arguments: shouldSetEnvVars ? .arguments(environmentVariables: developmentEnv) : nil
+                        arguments: shouldSetEnvVars ? .arguments(environmentVariables: envs) : nil
                     )
                 )
             ]
