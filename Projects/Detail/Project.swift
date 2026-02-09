@@ -1,15 +1,15 @@
 import ProjectDescription
 import ProjectDescriptionHelpers
 
-let moduleName = "Home"
+let moduleName = "Detail"
 
 let dependecies: [TargetDependency] = [
     .project(target: "DependencyInjectionInterfaces",
              path: "../DependencyInjection"),
     .project(target: "DesignSystem",
              path: "../DesignSystem"),
-    .project(target: "DetailInterfaces",
-             path: "../Detail"),
+    .project(target: "HomeInterfaces",
+             path: "../Home"),
     .external(name: "NetworkingInterfaces"),
 ]
 
@@ -19,6 +19,6 @@ let interfaceDependecies: [TargetDependency] = [
 ]
 
 let project = Project.templateModule(named: moduleName,
-                                     targets: [.source,. interfaces, .test, .testing],
+                                     targets: [.source, .interfaces, .test, .testing],
                                      dependencies: dependecies,
                                      interfaceDependecies: interfaceDependecies)
