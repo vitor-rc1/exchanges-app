@@ -81,6 +81,6 @@ let project = Project(
                                      arguments: .arguments(environmentVariables: ["IS_TESTING": "true"])),
                 runAction: .runAction(configuration: .debug,
                                       executable: .project(path: ".", target: moduleName),
-                                      arguments: .arguments(environmentVariables: developmentEnv)))
+                                      arguments: .arguments(environmentVariables: envs)))
     ]
 )
