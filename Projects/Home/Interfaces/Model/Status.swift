@@ -8,7 +8,7 @@
 
 import Foundation
 
-public struct Status: Equatable {
+public struct Status: Equatable, Sendable {
     let timestamp: String
     let errorCode: Int?
     let errorMessage: String?
