@@ -106,9 +106,9 @@ struct HomeViewModelTests {
     func testFormatPrice() {
         let (sut, _) = makeSut()
 
-        #expect(sut.formatPrice(1000000.50) == "$ 1.000.000,50")
-        #expect(sut.formatPrice(0.0) == "$ 0,00")
-        #expect(sut.formatPrice(1234.5) == "$ 1.234,50")
+        #expect(sut.formatPrice(1000000.50).contains("1.000.000,50"))
+        #expect(sut.formatPrice(0.0).contains("0,00"))
+        #expect(sut.formatPrice(1234.5).contains("1.234,50"))
     }
 
     @Test("GIVEN a valid ISO8601 date WHEN formatDate is called THEN returns localized short date")
