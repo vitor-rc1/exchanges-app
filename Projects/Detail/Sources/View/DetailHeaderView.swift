@@ -100,7 +100,11 @@ final class DetailHeaderView: UIView {
         let button = UIButton(type: .system)
         button.translatesAutoresizingMaskIntoConstraints = false
         let config = UIImage.SymbolConfiguration(pointSize: 18)
-        button.setImage(UIImage(systemName: "bird.fill", withConfiguration: config), for: .normal)
+        if #available(iOS 16.0, *) {
+            button.setImage(UIImage(systemName: "bird.fill", withConfiguration: config), for: .normal)
+        } else {
+            button.setImage(UIImage(systemName: "bubble.left", withConfiguration: config), for: .normal)
+        }
         button.tintColor = .white
         button.backgroundColor = .systemBlue
         button.layer.cornerRadius = 18
