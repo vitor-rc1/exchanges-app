@@ -34,6 +34,7 @@ struct HomeViewModelTests {
     @Test("GIVEN empty state WHEN loadData fails THEN updates state to error")
     func testLoadDataError() async throws {
         let (sut, doubles) = makeSut()
+        let messageError = "Failed to Load data. Press try again later or check your connection."
         let error = NSError(domain: "test", code: 1, userInfo: [NSLocalizedDescriptionKey: "Network error"])
         doubles.serviceSpy.fetchExchangesListResult = .failure(error)
 
@@ -44,7 +45,7 @@ struct HomeViewModelTests {
         #expect(doubles.serviceSpy.calledMethods.contains(.fetchExchangesList))
         #expect(sut.numberOfItems == 0)
         #expect(doubles.delegateSpy.calledMethods == [.didUpdateState(.loading),
-                                                      .didUpdateState(.error("Network error"))])
+                                                      .didUpdateState(.error(messageError, nil))])
     }
 
     @Test("GIVEN empty state WHEN loadData returns empty array THEN updates state to empty")
@@ -99,6 +100,43 @@ struct HomeViewModelTests {
         sut.didSelectRow(at: 0)
 
         #expect(doubles.coordinatorDelegateSpy.calledMethods == [.navigateToDetails(exchange)])
+    }
+
+    @Test("GIVEN a value WHEN formatPrice is called THEN returns formatted currency string")
+    func testFormatPrice() {
+        let (sut, _) = makeSut()
+
+        #expect(sut.formatPrice(1000000.50) == "$ 1.000.000,50")
+        #expect(sut.formatPrice(0.0) == "$ 0,00")
+        #expect(sut.formatPrice(1234.5) == "$ 1.234,50")
+    }
+
+    @Test("GIVEN a valid ISO8601 date WHEN formatDate is called THEN returns localized short date")
+    func testFormatDateValid() {
+        let (sut, _) = makeSut()
+
+        let result = sut.formatDate("2017-07-14T00:00:00.000Z")
+
+        let expectedFormatter = DateFormatter()
+        expectedFormatter.dateStyle = .short
+        expectedFormatter.timeStyle = .none
+        expectedFormatter.locale = Locale.current
+
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+        let date = isoFormatter.date(from: "2017-07-14T00:00:00.000Z")!
+        let expected = expectedFormatter.string(from: date)
+
+        #expect(result == expected)
+    }
+
+    @Test("GIVEN an invalid date string WHEN formatDate is called THEN returns the original string")
+    func testFormatDateInvalid() {
+        let (sut, _) = makeSut()
+
+        let result = sut.formatDate("not-a-date")
+
+        #expect(result == "not-a-date")
     }
 
     @Test("GIVEN loaded exchanges WHEN item is requested at valid index THEN returns correct exchange")

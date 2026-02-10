@@ -9,6 +9,7 @@
 import HomeInterfaces
 import Testing
 import UIKit
+import DesignSystem
 
 @testable import Home
 
@@ -27,9 +28,22 @@ struct HomeViewControllerTests {
         #expect(viewModelSpy.delegate != nil)
     }
 
-    @Test("GIVEN viewController WHEN tableView numberOfRows is called THEN returns viewModel numberOfItems")
-    func testTableViewNumberOfRows() throws {
+    @Test("GIVEN viewController in loading state WHEN tableView numberOfRows is called THEN returns 3")
+    func testTableViewNumberOfRowsLoading() throws {
         let (sut, viewModelSpy) = makeSut()
+        viewModelSpy.state = .loading
+        sut.loadView()
+        sut.viewDidLoad()
+
+        let numberOfRows = sut.tableView(UITableView(), numberOfRowsInSection: 0)
+
+        #expect(numberOfRows == 3)
+    }
+
+    @Test("GIVEN viewController in loaded state WHEN tableView numberOfRows is called THEN returns viewModel numberOfItems")
+    func testTableViewNumberOfRowsLoaded() throws {
+        let (sut, viewModelSpy) = makeSut()
+        viewModelSpy.state = .loaded
         viewModelSpy.numberOfItems = 5
         sut.loadView()
         sut.viewDidLoad()
@@ -39,8 +53,23 @@ struct HomeViewControllerTests {
         #expect(numberOfRows == 5)
     }
 
-    @Test("GIVEN viewController WHEN tableView cellForRow is called THEN returns configured cell")
-    func testTableViewCellForRow() throws {
+    @Test("GIVEN viewController in loading state WHEN tableView cellForRow is called THEN returns InfoCell in loading state")
+    func testTableViewCellForRowLoading() throws {
+        let (sut, viewModelSpy) = makeSut()
+        viewModelSpy.state = .loading
+        sut.loadView()
+        sut.viewDidLoad()
+
+        let tableView = UITableView()
+        tableView.register(InfoCell.self, forCellReuseIdentifier: InfoCell.identifier)
+
+        let cell = sut.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 0))
+
+        #expect(cell is InfoCell)
+    }
+
+    @Test("GIVEN viewController in loaded state WHEN tableView cellForRow is called THEN returns configured InfoCell")
+    func testTableViewCellForRowLoaded() throws {
         let (sut, viewModelSpy) = makeSut()
         let exchange = Exchange(
             id: 1,
@@ -50,6 +79,7 @@ struct HomeViewControllerTests {
             takerFee: 0.002,
             dateLaunched: "2017-07-14"
         )
+        viewModelSpy.state = .loaded
         viewModelSpy.itemsToReturn = [exchange]
         viewModelSpy.numberOfItems = 1
 
@@ -57,12 +87,14 @@ struct HomeViewControllerTests {
         sut.viewDidLoad()
 
         let tableView = UITableView()
-        tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(InfoCell.self, forCellReuseIdentifier: InfoCell.identifier)
 
         let cell = sut.tableView(tableView, cellForRowAt: IndexPath(row: 0, section: 0))
 
+        #expect(cell is InfoCell)
         #expect(viewModelSpy.calledMethods.contains(.item))
-        #expect(cell.textLabel?.text == nil || cell.contentConfiguration != nil)
+        #expect(viewModelSpy.calledMethods.contains(.formatPrice))
+        #expect(viewModelSpy.calledMethods.contains(.formatDate))
     }
 
     @Test("GIVEN viewController WHEN tableView didSelectRow is called THEN calls viewModel didSelectRow")

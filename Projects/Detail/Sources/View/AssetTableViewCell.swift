@@ -72,11 +72,13 @@ final class AssetTableViewCell: UITableViewCell {
     private func formatPrice(_ value: Double) -> String {
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
-        formatter.currencySymbol = "$ "
-        formatter.maximumFractionDigits = 2
+        formatter.currencySymbol = "$"
         formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        formatter.usesGroupingSeparator = true
         formatter.groupingSeparator = "."
         formatter.decimalSeparator = ","
+
         return formatter.string(from: NSNumber(value: value)) ?? "$ 0,00"
     }
 }

@@ -6,6 +6,7 @@
 //
 //
 
+import DesignSystem
 import UIKit
 
 class HomeViewController: UIViewController {
@@ -13,20 +14,15 @@ class HomeViewController: UIViewController {
     private let viewModel: HomeViewModelProtocol
 
     private lazy var tableView: UITableView = {
-        let tableView = UITableView()
+        let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.register(UITableViewCell.self, forCellReuseIdentifier: "cell")
+        tableView.register(InfoCell.self, forCellReuseIdentifier: InfoCell.identifier)
         tableView.isHidden = true
         tableView.delegate = self
         tableView.dataSource = self
+        tableView.separatorStyle = .none
         return tableView
-    }()
-
-    private lazy var loadingIndicator: UIActivityIndicatorView = {
-        let indicator = UIActivityIndicatorView(style: .large)
-        indicator.translatesAutoresizingMaskIntoConstraints = false
-        indicator.hidesWhenStopped = true
-        return indicator
     }()
 
     private lazy var footerSpinner: UIActivityIndicatorView = {
@@ -36,13 +32,11 @@ class HomeViewController: UIViewController {
         return spinner
     }()
 
-    private lazy var messageLabel: UILabel = {
-        let label = UILabel()
-        label.translatesAutoresizingMaskIntoConstraints = false
-        label.textAlignment = .center
-        label.numberOfLines = 0
-        label.isHidden = true
-        return label
+    private lazy var errorView: ErrorView = {
+        let view = ErrorView()
+        view.translatesAutoresizingMaskIntoConstraints = false
+        view.isHidden = true
+        return view
     }()
 
     init(viewModel: HomeViewModelProtocol) {
@@ -56,33 +50,39 @@ class HomeViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
         title = "Exchanges"
-        setupLayout()
+        setupView()
 
         tableView.tableFooterView = footerSpinner
-
         viewModel.delegate = self
         viewModel.loadData()
     }
+}
 
-    private func setupLayout() {
+extension HomeViewController: ViewCode {
+    func buildViewHierarch() {
         view.addSubview(tableView)
-        view.addSubview(loadingIndicator)
-        view.addSubview(messageLabel)
+        view.addSubview(errorView)
+    }
 
+    func setUpConstraints() {
         NSLayoutConstraint.activate([
             tableView.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor),
             tableView.bottomAnchor.constraint(equalTo: view.bottomAnchor),
             tableView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
 
-            loadingIndicator.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            loadingIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-
-            messageLabel.centerXAnchor.constraint(equalTo: view.centerXAnchor),
-            messageLabel.centerYAnchor.constraint(equalTo: view.centerYAnchor),
-            messageLabel.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 20),
-            messageLabel.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -20)
+            errorView.topAnchor.constraint(greaterThanOrEqualTo: view.safeAreaLayoutGuide.topAnchor),
+            errorView.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            errorView.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            errorView.bottomAnchor.constraint(lessThanOrEqualTo: view.safeAreaLayoutGuide.bottomAnchor),
+            errorView.centerYAnchor.constraint(equalTo: view.centerYAnchor)
         ])
+    }
+
+    func additionalConfiguration() {
+        errorView.retryAction = { [weak self] in
+            self?.viewModel.loadData()
+        }
     }
 }
 
@@ -91,33 +91,27 @@ extension HomeViewController: HomeViewModelDelegate {
     func didUpdateState(_ state: HomeViewState) {
         switch state {
         case .loading:
-            loadingIndicator.startAnimating()
-            tableView.isHidden = true
-            messageLabel.isHidden = true
-
+            tableView.isHidden = false
+            errorView.isHidden = true
         case .loadingMore:
             footerSpinner.startAnimating()
-
         case .loaded:
-            loadingIndicator.stopAnimating()
             footerSpinner.stopAnimating()
-            messageLabel.isHidden = true
+            errorView.isHidden = true
             tableView.isHidden = false
             tableView.reloadData()
-
         case .empty:
-            loadingIndicator.stopAnimating()
-            messageLabel.text = "No exchanges found.."
-            messageLabel.isHidden = false
-
-        case .error(let msg):
-            loadingIndicator.stopAnimating()
+            errorView.configure(title: "No exchanges found..",
+                                message: "Try again later or check your connection.")
+            errorView.isHidden = false
+        case let .error(msg, code):
+            tableView.isHidden = true
             footerSpinner.stopAnimating()
             if viewModel.numberOfItems == 0 {
-                messageLabel.text = msg
-                messageLabel.isHidden = false
-            } else {
-                print(msg)
+                errorView.configure(title: "Failed to load Exchanges",
+                                    message: msg,
+                                    code: code)
+                errorView.isHidden = false
             }
         }
     }
@@ -126,25 +120,39 @@ extension HomeViewController: HomeViewModelDelegate {
 // MARK: - TableView (Pagination & Cells)
 extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfItems
+        switch viewModel.state {
+        case .loading:
+            return 3
+        default:
+            return viewModel.numberOfItems
+        }
     }
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "cell", for: indexPath)
-        let item = viewModel.item(at: indexPath.row)
-
-        var content = cell.defaultContentConfiguration()
-        content.text = item.name
-
-        if item.isLoadingDetails {
-            content.secondaryText = "Loading..."
-            content.secondaryTextProperties.color = .systemBlue
-        } else {
-            content.secondaryText = "See more"
-            content.secondaryTextProperties.color = .secondaryLabel
+        guard let cell = tableView.dequeueReusableCell(withIdentifier: InfoCell.identifier,
+                                                       for: indexPath) as? InfoCell else {
+            return UITableViewCell()
         }
 
-        cell.contentConfiguration = content
+        switch viewModel.state {
+        case .loading:
+            cell.configure(state: .loading)
+        case .loaded:
+            let item = viewModel.item(at: indexPath.row)
+            if item.isLoadingDetails {
+                cell.configure(state: .partialLoaded(item.name))
+            } else {
+                let volPrice = "Vol: \(viewModel.formatPrice(item.spotVolumeUsd ?? 0.0))"
+                let dateLaunched = "Date launched: \(viewModel.formatDate(item.dateLaunched))"
+                cell.configure(state: .loaded(.init(url: item.logo,
+                                                    title: item.name,
+                                                    subtitle: volPrice,
+                                                    detail: dateLaunched)))
+            }
+        default:
+            return UITableViewCell()
+        }
+
         return cell
     }
 
