@@ -1,0 +1,51 @@
+# This file contains the fastlane.tools configuration
+# You can find the documentation at https://docs.fastlane.tools
+#
+# For a list of all available actions, check out
+#
+#     https://docs.fastlane.tools/actions
+#
+# For a list of all available plugins, check out
+#
+#     https://docs.fastlane.tools/plugins/available-plugins
+#
+
+# Uncomment the line if you want fastlane to automatically update itself
+# update_fastlane
+
+default_platform(:ios)
+
+platform :ios do
+  desc "Run Unit tests"
+  lane :tests do |options|
+    target = options[:target] || "App"
+    
+    run_tests(workspace: "ExchangesApp.xcworkspace", 
+              device: "iPhone 17 (26.1)",
+              scheme: target, 
+              code_coverage: true,
+              derived_data_path: "reports-#{target}/derived_data", 
+              output_directory: "reports-#{target}/test_output",)
+  end
+
+  lane :tests_coverage do |options|
+    target = options[:target] || "App"
+    slather(
+      proj: "Projects/#{target}/#{target}.xcodeproj",
+      scheme: target,
+      input_format: "profdata",
+      build_directory: "reports-#{target}/derived_data",
+      output_directory: "reports-#{target}/test_output",
+      source_directory: "Projects",
+      ignore: [
+        "**/Derived/**",
+        "**/derived_data/**",
+        "**/Interfaces/**",
+        "**/Tests/**",
+        "**/Testing/**",
+        "Tuist/**",
+      ],
+      cobertura_xml: true
+    )
+  end
+end

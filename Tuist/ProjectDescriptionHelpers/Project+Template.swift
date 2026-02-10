@@ -1,0 +1,127 @@
+import ProjectDescription
+
+public enum ModuleTargets: Equatable {
+    case test, testing, interfaces, app, source
+}
+
+let cmApiBaseURL =  Environment.cmApiBaseUrl.getString(default: "")
+let cmApiKey = Environment.cmApiKey.getString(default: "")
+
+public let envs: [String: EnvironmentVariable] = [
+    "CM_API_BASE_URL": EnvironmentVariable(stringLiteral: cmApiBaseURL),
+    "CM_API_KEY": EnvironmentVariable(stringLiteral: cmApiKey)
+]
+
+public let iOSDeploymentTarget: DeploymentTargets = .iOS("15.0")
+public let commonSettings: SettingsDictionary = [
+    "SWIFT_VERSION": "6.0"
+]
+
+public let swiftLintScript: TargetScript = .post(path: "../../scripts/swiftlint.sh",
+                                                 arguments: "",
+                                                 name: "Swiftlint")
+
+public extension Project {
+    static func templateModule(named moduleName: String,
+                               targets: [ModuleTargets] = [.source, .interfaces, .test],
+                               dependencies: [TargetDependency] = [],
+                               testDependencies: [TargetDependency] = [],
+                               interfaceDependecies: [TargetDependency] = [],
+                               shouldSetEnvVars: Bool = false) -> Project {
+        var selectedTargets: [Target] = []
+        
+        if targets.contains(.interfaces) {
+            selectedTargets.append(
+                .target(name: "\(moduleName)Interfaces",
+                        destinations: .iOS,
+                        product: .framework,
+                        bundleId: "com.vrc.\(moduleName.lowercased()).interfaces",
+                        deploymentTargets: iOSDeploymentTarget,
+                        infoPlist: .default,
+                        buildableFolders: ["Interfaces"],
+                        scripts: [
+                            swiftLintScript
+                        ],
+                        dependencies: interfaceDependecies)
+            )
+        }
+        
+        var moduleTargets: [TargetDependency] = dependencies
+        
+        if targets.contains(.interfaces) {
+            moduleTargets.append(.target(name: "\(moduleName)Interfaces"))
+        }
+        
+        if targets.contains(.source) {
+            selectedTargets.append(
+                .target(name: moduleName,
+                        destinations: .iOS,
+                        product: .framework,
+                        bundleId: "com.vrc.\(moduleName.lowercased())",
+                        deploymentTargets: iOSDeploymentTarget,
+                        infoPlist: .default,
+                        buildableFolders: ["Sources"],
+                        scripts: [
+                            swiftLintScript
+                        ],
+                        dependencies: moduleTargets)
+            )
+        }
+        
+        if targets.contains(.test) {
+            var testDeps: [TargetDependency] = testDependencies
+            testDeps.append(.target(name: moduleName))
+            
+            if targets.contains(.testing) {
+                testDeps.append(.target(name: "\(moduleName)Testing"))
+            }
+            
+            selectedTargets.append(
+                .target(name: "\(moduleName)Tests",
+                        destinations: .iOS,
+                        product: .unitTests,
+                        bundleId: "com.vrc.\(moduleName.lowercased()).tests",
+                        deploymentTargets: iOSDeploymentTarget,
+                        infoPlist: .default,
+                        buildableFolders: ["Tests"],
+                        dependencies: testDeps)
+            )
+        }
+        
+        if targets.contains(.testing) && targets.contains(.interfaces) {
+            selectedTargets.append(
+                .target(name: "\(moduleName)Testing",
+                        destinations: .iOS,
+                        product: .framework,
+                        bundleId: "com.vrc.\(moduleName.lowercased()).testing",
+                        deploymentTargets: iOSDeploymentTarget,
+                        infoPlist: .default,
+                        buildableFolders: ["Testing"] ,
+                        dependencies: [
+                            .target(name: "\(moduleName)Interfaces")
+                        ])
+            )
+        }
+        
+        return Project(
+            name: moduleName,
+            options: .options(automaticSchemesOptions: .disabled),
+            settings: .settings(
+                base: commonSettings
+            ),
+            targets: selectedTargets,
+            schemes: [
+                .scheme(
+                    name: moduleName,
+                    shared: true,
+                    buildAction: .buildAction(targets: ["\(moduleName)"]),
+                    testAction: targets.contains(.test) ? .targets(["\(moduleName)Tests"]) : nil,
+                    runAction: .runAction(
+                        configuration: .debug,
+                        arguments: shouldSetEnvVars ? .arguments(environmentVariables: envs) : nil
+                    )
+                )
+            ]
+        )
+    }
+}
