@@ -13,5 +13,5 @@ enum HomeViewState: Equatable {
     case loadingMore
     case empty
     case loaded
-    case error(String)
+    case error(String, String?)
 }

@@ -86,9 +86,21 @@ final class HomeViewModel: HomeViewModelProtocol {
             } catch {
                 isFetching = false
                 if exchanges.isEmpty {
-                    state = .error(error.localizedDescription)
+                    let serviceError = error as? ServiceError
+                    let defaultMessage = "Failed to Load data. Press try again later or check your connection."
+                    let message: String
+                    var code: String?
+                    switch serviceError {
+                    case .decodeFail, .none:
+                        message = defaultMessage
+                    case .network(let status):
+                        message = status.errorMessage ?? defaultMessage
+                        if let statusCode = status.errorCode {
+                            code = String(statusCode)
+                        }
+                    }
+                    state = .error(message, code)
                 } else {
-                    print("Fail to load page: \(error)")
                     state = .loaded
                 }
             }
@@ -115,5 +127,36 @@ final class HomeViewModel: HomeViewModelProtocol {
                         dateLaunched: detail.dateLaunched,
                         websiteUrl: detail.urls.website.first,
                         twitterUrl: detail.urls.twitter.first)
+    }
+
+    func formatPrice(_ value: Double) -> String {
+        let formatter = NumberFormatter()
+        formatter.numberStyle = .currency
+        formatter.currencySymbol = "$"
+        formatter.minimumFractionDigits = 2
+        formatter.maximumFractionDigits = 2
+        formatter.usesGroupingSeparator = true
+        formatter.groupingSeparator = "."
+        formatter.decimalSeparator = ","
+
+        formatter.locale = Locale(identifier: "pt_BR")
+
+        return formatter.string(from: NSNumber(value: value)) ?? "$ 0,00"
+    }
+
+    func formatDate(_ date: String) -> String {
+        let isoFormatter = ISO8601DateFormatter()
+        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
+
+        guard let date = isoFormatter.date(from: date) else {
+            return date
+        }
+
+        let displayFormatter = DateFormatter()
+        displayFormatter.dateStyle = .short
+        displayFormatter.timeStyle = .none
+        displayFormatter.locale = Locale.current
+
+        return displayFormatter.string(from: date)
     }
 }
