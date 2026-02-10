@@ -83,6 +83,7 @@ public final class InfoCell: UITableViewCell {
             subtitleLabel.text = model.subtitle
             detailLabel.text = model.detail
             iconImageView.image = UIImage(systemName: "bahtsign.bank.building.fill")
+            loadImage(from: model.url)
 
         case let .partialLoaded(title):
             iconImageView.image = UIImage(systemName: "bahtsign.bank.building.fill")
