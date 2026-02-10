@@ -139,6 +139,8 @@ final class HomeViewModel: HomeViewModelProtocol {
         formatter.groupingSeparator = "."
         formatter.decimalSeparator = ","
 
+        formatter.locale = Locale(identifier: "pt_BR")
+
         return formatter.string(from: NSNumber(value: value)) ?? "$ 0,00"
     }
 

@@ -103,13 +103,17 @@ struct HomeViewModelTests {
     }
 
     @Test("GIVEN a value WHEN formatPrice is called THEN returns formatted currency string",
-        .disabled("Failing only on ci due to locale-specific formatting differences"))
-    func testFormatPrice() {
+          arguments: [
+        (1000000.50, "1.000.000,50"),
+        (0.0, "0,00"),
+        (1234.5, "1.234,50")
+    ])
+    func testFormatPrice(value: Double, expectedString: String) {
         let (sut, _) = makeSut()
 
-        #expect(sut.formatPrice(1000000.50).contains("1.000.000,50"))
-        #expect(sut.formatPrice(0.0).contains("0,00"))
-        #expect(sut.formatPrice(1234.5).contains("1.234,50"))
+        let result = sut.formatPrice(value)
+
+        #expect(result.contains(expectedString))
     }
 
     @Test("GIVEN a valid ISO8601 date WHEN formatDate is called THEN returns localized short date")
