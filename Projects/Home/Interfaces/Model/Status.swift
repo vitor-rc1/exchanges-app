@@ -8,12 +8,16 @@
 
 import Foundation
 
+public struct StatusResponse: Equatable, Sendable, Codable {
+    public let status: Status
+}
+
 public struct Status: Equatable, Sendable {
-    let timestamp: String
-    let errorCode: Int?
-    let errorMessage: String?
-    let elapsed: Int
-    let creditCount: Int
+    public let timestamp: String
+    public let errorCode: Int?
+    public let errorMessage: String?
+    public let elapsed: Int
+    public let creditCount: Int
 
     public init(timestamp: String,
                 errorCode: Int? = nil,

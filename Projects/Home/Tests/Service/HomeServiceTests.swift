@@ -64,11 +64,13 @@ struct HomeServiceTests {
         ))
         let mockResponse = """
         {
-            "timestamp": "2024-01-01T00:00:00.000Z",
-            "error_code": 401,
-            "error_message": "Invalid API Key",
-            "elapsed": 10,
-            "credit_count": 1
+            "status": {
+                "timestamp": "2024-01-01T00:00:00.000Z",
+                "error_code": 401,
+                "error_message": "Invalid API Key",
+                "elapsed": 10,
+                "credit_count": 1
+            }
         }
         """
         let data = mockResponse.data(using: .utf8)!
@@ -149,11 +151,13 @@ struct HomeServiceTests {
 
         let mockResponse = """
         {
-            "timestamp": "2024-01-01T00:00:00.000Z",
-            "error_code": 500,
-            "error_message": "Internal Server Error",
-            "elapsed": 10,
-            "credit_count": 1
+            "status": {
+                "timestamp": "2024-01-01T00:00:00.000Z",
+                "error_code": 500,
+                "error_message": "Internal Server Error",
+                "elapsed": 10,
+                "credit_count": 1
+            }
         }
         """
         let data = mockResponse.data(using: .utf8)!

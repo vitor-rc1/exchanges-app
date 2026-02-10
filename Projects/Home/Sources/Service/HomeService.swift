@@ -29,8 +29,8 @@ final class HomeService: Sendable {
         case 200...299:
             return try decodeResponse(data)
         default:
-            let error: Status = try decodeResponse(data)
-            throw ServiceError.network(error)
+            let error: StatusResponse = try decodeResponse(data)
+            throw ServiceError.network(error.status)
         }
     }
 

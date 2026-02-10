@@ -72,12 +72,14 @@ struct DetailServiceTests {
     func testFetchExchangeAssetsNetworkError() async throws {
         let (sut, networkSpy) = makeSut()
         let mockResponse = """
-        {
-            "timestamp": "2024-01-01T00:00:00.000Z",
-            "error_code": 404,
-            "error_message": "Exchange not found",
-            "elapsed": 10,
-            "credit_count": 1
+        { 
+            "status": {
+                "timestamp": "2024-01-01T00:00:00.000Z",
+                "error_code": 404,
+                "error_message": "Exchange not found",
+                "elapsed": 10,
+                "credit_count": 1
+            }
         }
         """
         let data = try #require(mockResponse.data(using: .utf8))

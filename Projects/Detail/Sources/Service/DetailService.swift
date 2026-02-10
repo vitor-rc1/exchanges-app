@@ -29,8 +29,8 @@ final class DetailService: Sendable {
         case 200...299:
             return try decodeResponse(data)
         default:
-            let error: Status = try decodeResponse(data)
-            throw DetailServiceError.network(error)
+            let error: StatusResponse = try decodeResponse(data)
+            throw DetailServiceError.network(error.status)
         }
     }
 
