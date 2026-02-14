@@ -77,3 +77,4 @@ Gemfile.lock
 .bundle
 reports-*/
 .env
+.claude
