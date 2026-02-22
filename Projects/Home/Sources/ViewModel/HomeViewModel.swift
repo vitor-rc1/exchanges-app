@@ -15,6 +15,7 @@ final class HomeViewModel: HomeViewModelProtocol {
     weak var coordinatorDelegate: HomeViewModelCoordinatorDelegate?
 
     private let service: HomeServiceProtocol
+    private let defaultMessage = "Failed to load data. Press try again or check your connection."
 
     private var currentPage = 1
     private var isFetching = false
@@ -83,29 +84,21 @@ final class HomeViewModel: HomeViewModelProtocol {
                 isFetching = false
                 state = .loaded
 
-            } catch {
-                isFetching = false
-                if exchanges.isEmpty {
-                    let serviceError = error as? ServiceError
-                    let defaultMessage = "Failed to Load data. Press try again later or check your connection."
-                    let message: String
-                    var code: String?
-                    switch serviceError {
-                    case .decodeFail, .none:
-                        message = defaultMessage
-                    case let .network(status):
-                        message = status.errorMessage ?? defaultMessage
-                        if let statusCode = status.errorCode {
-                            code = String(statusCode)
-                        }
-                    case let .requestError(error):
-                        message = error ?? defaultMessage
-                    }
-                    state = .error(message, code)
-                } else {
-                    state = .loaded
+            } catch ServiceError.decodeFail {
+                state = .error(defaultMessage, nil)
+            } catch let ServiceError.network(status) {
+                let message = status.errorMessage ?? defaultMessage
+                var code: String?
+                if let statusCode = status.errorCode {
+                    code = String(statusCode)
                 }
+                state = .error(message, code)
+            } catch let ServiceError.requestError(error) {
+                let message = error ?? defaultMessage
+                state = .error(message, nil)
             }
+
+            isFetching = false
         }
     }
 

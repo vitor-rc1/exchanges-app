@@ -16,7 +16,7 @@ enum DetailServiceError: Error, Equatable {
 }
 
 final class DetailService: Sendable {
-    private nonisolated(unsafe) let networkService: NetworkServiceProtocol
+    private let networkService: NetworkServiceProtocol
 
     init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
