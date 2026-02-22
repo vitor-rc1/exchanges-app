@@ -27,7 +27,8 @@ struct ErrorViewSnapshotTest {
     func testConfigureCode() throws {
         let sut = makeSut(title: "Failed to load Exchanges",
                           message: "Our server is experiencing problems.\nPlease try again.",
-                          code: "500")
+                          code: "500",
+                          buttonText: "Back")
 
         assertSnapshot(of: sut, as: .image)
     }
@@ -43,6 +44,8 @@ struct ErrorViewSnapshotTest {
                       message: message,
                       code: code,
                       buttonText: buttonText)
+        sut.setNeedsLayout()
+        sut.layoutIfNeeded()
 
         return sut
     }

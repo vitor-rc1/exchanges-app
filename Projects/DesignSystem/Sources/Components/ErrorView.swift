@@ -44,7 +44,6 @@ public final class ErrorView: UIView {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "arrow.clockwise")
         button.setImage(image, for: .normal)
-        button.setTitle("Try again", for: .normal)
         button.titleLabel?.font = DSFonts.bodyRegular
         button.tintColor = .systemBlue
         button.backgroundColor = .systemBlue.withAlphaComponent(0.15)
@@ -104,9 +103,7 @@ public final class ErrorView: UIView {
             codeLabel.isHidden = false
         }
 
-        if let buttonText {
-            retryButton.setTitle(buttonText, for: .normal)
-        }
+        retryButton.setTitle(buttonText ?? "Try again", for: .normal)
     }
 
     @objc private func retryButtonTapped() {
