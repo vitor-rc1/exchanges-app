@@ -15,7 +15,7 @@ final class HeaderSectionView: UITableViewHeaderFooterView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.font = DSFonts.title3Emphasized
         label.textColor = .label
         return label
     }()

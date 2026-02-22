@@ -34,7 +34,7 @@ final class AssetTableViewCell: UITableViewCell {
     private lazy var nameLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 17, weight: .regular)
+        label.font = DSFonts.bodyRegular
         label.textColor = .label
         return label
     }()
@@ -42,7 +42,7 @@ final class AssetTableViewCell: UITableViewCell {
     private lazy var priceLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 13, weight: .regular)
+        label.font = DSFonts.subheadlineRegular
         label.textColor = .systemGreen
         return label
     }()

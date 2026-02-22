@@ -14,7 +14,7 @@ public final class ErrorView: UIView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title2)
+        label.font = DSFonts.titl2eRegular
         label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = 1
@@ -23,7 +23,7 @@ public final class ErrorView: UIView {
 
     private lazy var messageLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .callout)
+        label.font = DSFonts.calloutRegular
         label.textColor = .secondaryLabel
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -32,7 +32,7 @@ public final class ErrorView: UIView {
 
     private lazy var codeLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.font = DSFonts.footnoteRegular
         label.textColor = .tertiaryLabel
         label.textAlignment = .right
         label.numberOfLines = 1
@@ -45,7 +45,7 @@ public final class ErrorView: UIView {
         let image = UIImage(systemName: "arrow.clockwise")
         button.setImage(image, for: .normal)
         button.setTitle("Try again", for: .normal)
-        button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+        button.titleLabel?.font = DSFonts.bodyRegular
         button.tintColor = .systemBlue
         button.backgroundColor = .systemBlue.withAlphaComponent(0.15)
         button.layer.cornerRadius = DSSpacings.medium.rawValue

@@ -36,9 +36,12 @@ public final class InfoCell: UITableViewCell {
     }()
 
     private lazy var iconImageView = makeImageView()
-    private lazy var titleLabel = makeLabel(font: .systemFont(ofSize: 17), color: .label)
-    private lazy var subtitleLabel = makeLabel(font: .systemFont(ofSize: 15), color: .systemGreen)
-    private lazy var detailLabel = makeLabel(font: .systemFont(ofSize: 15), color: .secondaryLabel)
+    private lazy var titleLabel = makeLabel(font: DSFonts.bodyRegular,
+                                            color: .label)
+    private lazy var subtitleLabel = makeLabel(font: DSFonts.subheadlineRegular,
+                                               color: .systemGreen)
+    private lazy var detailLabel = makeLabel(font: DSFonts.subheadlineRegular,
+                                             color: .secondaryLabel)
 
     private lazy var chevronImageView: UIImageView = {
         let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold)

@@ -33,7 +33,7 @@ final class DetailHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = DSFonts.calloutEmphasized
         label.textColor = .label
         return label
     }()
@@ -41,7 +41,7 @@ final class DetailHeaderView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         label.numberOfLines = 10
         label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
@@ -58,7 +58,7 @@ final class DetailHeaderView: UIView {
     private lazy var dateLaunchedLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         return label
     }()
@@ -66,7 +66,7 @@ final class DetailHeaderView: UIView {
     private lazy var makerFeeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         label.textAlignment = .left
         return label
@@ -75,7 +75,7 @@ final class DetailHeaderView: UIView {
     private lazy var takerFeeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         label.textAlignment = .left
         return label
