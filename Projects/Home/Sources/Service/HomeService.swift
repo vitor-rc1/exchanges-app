@@ -17,12 +17,13 @@ enum ServiceError: Error, Equatable {
 }
 
 final class HomeService: Sendable {
-    private nonisolated(unsafe) let networkService: NetworkServiceProtocol
+    private let networkService: NetworkServiceProtocol
 
     init(networkService: NetworkServiceProtocol) {
         self.networkService = networkService
     }
 
+    @concurrent
     private func performRequest<T: Codable>(endpoint: APIEndpointProtocol) async throws(ServiceError) -> T {
         let (data, httpUrlResponse): (Data, HTTPURLResponse)
 
@@ -53,12 +54,14 @@ final class HomeService: Sendable {
 }
 
 extension HomeService: HomeServiceProtocol {
+    @concurrent
     func fetchExchangesList(page: Int, limit: Int) async throws(ServiceError) -> [ExchangeSummary] {
         let endpoint = HomeEndpoint.fetchItems(page: page, limit: limit)
         let response: ExchangeResponse<ExchangeSummary> = try await performRequest(endpoint: endpoint)
         return response.data
     }
 
+    @concurrent
     func fetchDetailsFor(ids: [String]) async throws(ServiceError) -> [ExchangeDetail] {
         let endpoint = HomeEndpoint.fetchDetail(ids: ids)
         let response: ExchangeDetailResponse<ExchangeDetail> = try await performRequest(endpoint: endpoint)
