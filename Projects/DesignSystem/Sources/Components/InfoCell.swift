@@ -6,12 +6,12 @@ public final class InfoCell: UITableViewCell {
 
     // MARK: - Models
     public enum State {
-        case loaded(InfoCellModel)
+        case loaded(Model)
         case partialLoaded(String)
         case loading
     }
 
-    public struct InfoCellModel {
+    public struct Model {
         public let url: String
         public let title: String
         public let subtitle: String
