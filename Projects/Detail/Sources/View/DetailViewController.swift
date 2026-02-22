@@ -22,7 +22,7 @@ final class DetailViewController: UIViewController {
     private lazy var tableView: UITableView = {
         let tableView = UITableView(frame: .zero, style: .plain)
         tableView.translatesAutoresizingMaskIntoConstraints = false
-        tableView.register(AssetTableViewCell.self, forCellReuseIdentifier: AssetTableViewCell.reuseIdentifier)
+        tableView.register(InfoCell.self, forCellReuseIdentifier: InfoCell.identifier)
         tableView.delegate = self
         tableView.dataSource = self
         tableView.separatorStyle = .none
@@ -105,13 +105,20 @@ extension DetailViewController: UITableViewDataSource {
 
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         guard let cell = tableView.dequeueReusableCell(
-            withIdentifier: AssetTableViewCell.reuseIdentifier,
+            withIdentifier: InfoCell.identifier,
             for: indexPath
-        ) as? AssetTableViewCell else {
+        ) as? InfoCell else {
             return UITableViewCell()
         }
 
-        cell.configure(with: viewModel.assets[indexPath.row])
+        let asset = viewModel.assets[indexPath.row]
+        cell.configure(state: .loaded(.init(
+            url: "",
+            title: asset.name,
+            subtitle: asset.formattedPrice,
+            defaultImage: UIImage(systemName: "bitcoinsign.circle.fill"),
+            hiddenChevron: true
+        )))
         return cell
     }
 }

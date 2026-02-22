@@ -13,7 +13,7 @@ import Testing
 @testable import DesignSystem
 
 @MainActor
-@Suite()
+@Suite
 struct ErrorViewSnapshotTest {
     @Test("GIVEN ErrorView THEN it should configure with default values")
     func testConfigureDefaultValues() throws {

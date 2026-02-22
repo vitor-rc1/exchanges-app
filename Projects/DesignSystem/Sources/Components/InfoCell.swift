@@ -15,13 +15,22 @@ public final class InfoCell: UITableViewCell {
         public let url: String
         public let title: String
         public let subtitle: String
-        public let detail: String
+        public let detail: String?
+        public let defaultImage: UIImage?
+        public let hideChevron: Bool
 
-        public init(url: String, title: String, subtitle: String, detail: String) {
+        public init(url: String,
+                    title: String,
+                    subtitle: String,
+                    detail: String? = nil,
+                    defaultImage: UIImage? = nil,
+                    hiddenChevron: Bool = false) {
             self.url = url
             self.title = title
             self.subtitle = subtitle
             self.detail = detail
+            self.defaultImage = defaultImage
+            self.hideChevron = hiddenChevron
         }
     }
 
@@ -48,6 +57,7 @@ public final class InfoCell: UITableViewCell {
         let imageView = UIImageView(image: UIImage(systemName: "chevron.right", withConfiguration: config))
         imageView.tintColor = .tertiaryLabel
         imageView.translatesAutoresizingMaskIntoConstraints = false
+        imageView.isHidden = true
         return imageView
     }()
 
@@ -59,6 +69,8 @@ public final class InfoCell: UITableViewCell {
         return stack
     }()
 
+    private let defaultImage = UIImage(systemName: "bahtsign.bank.building.fill")
+
     // MARK: - Init
     override init(style: UITableViewCell.CellStyle, reuseIdentifier: String?) {
         super.init(style: style, reuseIdentifier: reuseIdentifier)
@@ -69,11 +81,18 @@ public final class InfoCell: UITableViewCell {
 
     public override func prepareForReuse() {
         super.prepareForReuse()
-        [iconImageView, titleLabel, subtitleLabel, detailLabel].forEach { $0.setSkeleton(false) }
+        [
+            iconImageView,
+            titleLabel,
+            subtitleLabel,
+            detailLabel
+        ].forEach { $0.setSkeleton(false) }
         iconImageView.image = nil
         titleLabel.text = nil
         subtitleLabel.text = nil
         detailLabel.text = nil
+        detailLabel.isHidden = false
+        chevronImageView.isHidden = true
     }
 
     // MARK: - Public Configuration
@@ -85,14 +104,19 @@ public final class InfoCell: UITableViewCell {
             titleLabel.text = model.title
             subtitleLabel.text = model.subtitle
             detailLabel.text = model.detail
-            iconImageView.image = UIImage(systemName: "bahtsign.bank.building.fill")
+            detailLabel.isHidden = model.detail == nil
+            iconImageView.image = model.defaultImage ?? defaultImage
             loadImage(from: model.url)
+            chevronImageView.isHidden = model.hideChevron
 
         case let .partialLoaded(title):
-            iconImageView.image = UIImage(systemName: "bahtsign.bank.building.fill")
+            iconImageView.image = defaultImage
             titleLabel.text = title
-            subtitleLabel.text = " "; subtitleLabel.setSkeleton(true)
-            detailLabel.text = " "; detailLabel.setSkeleton(true)
+            subtitleLabel.text = " "
+            subtitleLabel.setSkeleton(true)
+            detailLabel.isHidden = false
+            detailLabel.text = " "
+            detailLabel.setSkeleton(true)
 
         case .loading:
             iconImageView.setSkeleton(true, cornerRadius: 11)
@@ -100,6 +124,7 @@ public final class InfoCell: UITableViewCell {
             titleLabel.setSkeleton(true)
             subtitleLabel.text = " "
             subtitleLabel.setSkeleton(true)
+            detailLabel.isHidden = false
             detailLabel.text = " "
             detailLabel.setSkeleton(true)
         }
@@ -121,7 +146,7 @@ private extension InfoCell {
         imageView.contentMode = .scaleAspectFill
         imageView.clipsToBounds = true
         imageView.layer.cornerRadius = 12
-        imageView.backgroundColor = .secondarySystemFill
+        imageView.backgroundColor = .clear
         imageView.translatesAutoresizingMaskIntoConstraints = false
         return imageView
     }
@@ -132,7 +157,9 @@ private extension InfoCell {
             do {
                 let (data, _) = try await URLSession.shared.data(from: url)
                 if let image = UIImage(data: data) {
-                    await MainActor.run { iconImageView.image = image }
+                    await MainActor.run {
+                        iconImageView.image = image
+                    }
                 }
             } catch {}
         }
@@ -206,6 +233,7 @@ import SwiftUI
         subtitle: "Vol: $1234.23",
         detail: "Date launched: 12/03/2025"
     )))
+    view.backgroundColor = .gray
     return view
 }
 
@@ -213,6 +241,7 @@ import SwiftUI
 #Preview("Partial Loaded") {
     let view = InfoCell()
     view.configure(state: .partialLoaded("Binance"))
+    view.backgroundColor = .gray
     return view
 }
 
@@ -220,6 +249,7 @@ import SwiftUI
 #Preview("Loading") {
     let view = InfoCell()
     view.configure(state: .loading)
+    view.backgroundColor = .gray
     return view
 }
 #endif
