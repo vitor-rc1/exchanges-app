@@ -9,15 +9,15 @@
 import Foundation
 import NetworkingInterfaces
 
-final class NetworkServiceProtocolSpy: NetworkServiceProtocol, @unchecked Sendable {
-    enum Method: Equatable {
+actor NetworkServiceProtocolSpy: NetworkServiceProtocol, Sendable {
+    enum Method: Equatable, Sendable {
         case request
     }
 
-    var calledMethods: [Method] = []
-    var requestResult: Result<(Data, HTTPURLResponse), Error>?
+    private(set) var calledMethods: [Method] = []
+    private(set) var requestResult: Result<(Data, HTTPURLResponse), NetworkError>?
 
-    func request(endpoint: APIEndpointProtocol) async throws -> (Data, HTTPURLResponse) {
+    func request(endpoint: APIEndpointProtocol) async throws(NetworkError) -> (Data, HTTPURLResponse) {
         calledMethods.append(.request)
 
         guard let result = requestResult else {
@@ -25,5 +25,9 @@ final class NetworkServiceProtocolSpy: NetworkServiceProtocol, @unchecked Sendab
         }
 
         return try result.get()
+    }
+
+    func setResponse(requestResult: Result<(Data, HTTPURLResponse), NetworkError>) async {
+        self.requestResult = requestResult
     }
 }

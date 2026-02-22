@@ -58,11 +58,11 @@ struct DetailServiceTests {
             headerFields: nil
         ))
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         let result = try await sut.fetchExchangeAssets(id: 1)
 
-        #expect(networkSpy.calledMethods == [.request])
+        #expect(await networkSpy.calledMethods == [.request])
         #expect(result.count == 2)
         #expect(result[0] == Asset(id: 1, name: "Bitcoin", symbol: "BTC", priceUsd: 50000.0))
         #expect(result[1] == Asset(id: 2, name: "Ethereum", symbol: "ETH", priceUsd: 3000.0))
@@ -91,7 +91,7 @@ struct DetailServiceTests {
             headerFields: nil
         ))
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         do {
             _ = try await sut.fetchExchangeAssets(id: 999)
@@ -104,7 +104,7 @@ struct DetailServiceTests {
                 elapsed: 10,
                 creditCount: 1
             )))
-            #expect(networkSpy.calledMethods == [.request])
+            #expect(await networkSpy.calledMethods == [.request])
         }
     }
 
@@ -123,13 +123,13 @@ struct DetailServiceTests {
             headerFields: nil
         ))
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         do {
             _ = try await sut.fetchExchangeAssets(id: 1)
             Issue.record("Expected error to be thrown")
         } catch {
-            #expect(networkSpy.calledMethods == [.request])
+            #expect(await networkSpy.calledMethods == [.request])
         }
     }
 }

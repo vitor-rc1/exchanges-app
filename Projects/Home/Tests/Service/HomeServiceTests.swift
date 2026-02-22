@@ -40,11 +40,11 @@ struct HomeServiceTests {
             headerFields: nil
         )!
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         let result = try await sut.fetchExchangesList(page: 1, limit: 20)
 
-        #expect(networkSpy.calledMethods == [.request])
+        #expect(await networkSpy.calledMethods == [.request])
         #expect(result.count == 2)
         #expect(result[0].id == 1)
         #expect(result[0].name == "Binance")
@@ -81,12 +81,12 @@ struct HomeServiceTests {
             headerFields: nil
         )!
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         await #expect(throws: expectedError) {
             _ = try await sut.fetchDetailsFor(ids: ["1"])
         }
-        #expect(networkSpy.calledMethods == [.request])
+        #expect(await networkSpy.calledMethods == [.request])
     }
 
     @Test("GIVEN successful response WHEN fetchDetailsFor is called THEN returns exchange details")
@@ -127,11 +127,11 @@ struct HomeServiceTests {
             headerFields: nil
         )!
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         let result = try await sut.fetchDetailsFor(ids: ["1"])
 
-        #expect(networkSpy.calledMethods == [.request])
+        #expect(await networkSpy.calledMethods == [.request])
         #expect(result.count == 1)
         #expect(result[0].id == 1)
         #expect(result[0].name == "Binance")
@@ -168,12 +168,12 @@ struct HomeServiceTests {
             headerFields: nil
         )!
 
-        networkSpy.requestResult = .success((data, httpResponse))
+        await networkSpy.setResponse(requestResult: .success((data, httpResponse)))
 
         await #expect(throws: expectedError) {
             _ = try await sut.fetchDetailsFor(ids: ["1"])
         }
-        #expect(networkSpy.calledMethods == [.request])
+        #expect(await networkSpy.calledMethods == [.request])
     }
 }
 
