@@ -58,15 +58,7 @@ let project = Project(
                 deploymentTargets: iOSDeploymentTarget,
                 infoPlist: .default,
                 buildableFolders: ["Tests"],
-                dependencies: testDependencies),
-        .target(name: "\(moduleName)UITests",
-                destinations: .iOS,
-                product: .uiTests,
-                bundleId: "com.vrc.exchanges.\(moduleName.lowercased()).uitests",
-                deploymentTargets: iOSDeploymentTarget,
-                infoPlist: .default,
-                buildableFolders: ["UITests"],
-                dependencies: testDependencies + [.xctest])
+                dependencies: testDependencies)
 
     ],
     schemes: [
@@ -74,9 +66,7 @@ let project = Project(
                 shared: true,
                 buildAction: .buildAction(targets: [.project(path: ".", target: moduleName)]),
                 testAction: .targets([
-                    "\(moduleName)Tests",
-                    // Disabled UITests for now, as they are not yet implemented
-//                    "\(moduleName)UITests"
+                    "\(moduleName)Tests"
                 ],
                                      arguments: .arguments(environmentVariables: ["IS_TESTING": "true"])),
                 runAction: .runAction(configuration: .debug,
