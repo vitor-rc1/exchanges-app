@@ -35,8 +35,12 @@ struct HomeViewModelTests {
     func testLoadDataError() async throws {
         let (sut, doubles) = makeSut()
         let messageError = "Failed to Load data. Press try again later or check your connection."
-        let error = NSError(domain: "test", code: 1, userInfo: [NSLocalizedDescriptionKey: "Network error"])
-        doubles.serviceSpy.fetchExchangesListResult = .failure(error)
+        let serviceError = ServiceError.network(.init(timestamp: "",
+                                                      errorCode: 1,
+                                                      errorMessage: messageError,
+                                                      elapsed: 0,
+                                                      creditCount: 0))
+        doubles.serviceSpy.fetchExchangesListResult = .failure(serviceError)
 
         sut.loadData()
 
@@ -45,7 +49,7 @@ struct HomeViewModelTests {
         #expect(doubles.serviceSpy.calledMethods.contains(.fetchExchangesList))
         #expect(sut.numberOfItems == 0)
         #expect(doubles.delegateSpy.calledMethods == [.didUpdateState(.loading),
-                                                      .didUpdateState(.error(messageError, nil))])
+                                                      .didUpdateState(.error(messageError, "1"))])
     }
 
     @Test("GIVEN empty state WHEN loadData returns empty array THEN updates state to empty")

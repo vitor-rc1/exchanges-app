@@ -19,10 +19,10 @@ final class HomeServiceProtocolSpy: HomeServiceProtocol, Sendable {
     }
 
     var calledMethods: [Method] = []
-    var fetchExchangesListResult: Result<[ExchangeSummary], Error>?
-    var fetchDetailsForResult: Result<[ExchangeDetail], Error>?
+    var fetchExchangesListResult: Result<[ExchangeSummary], ServiceError>?
+    var fetchDetailsForResult: Result<[ExchangeDetail], ServiceError>?
 
-    func fetchExchangesList(page: Int, limit: Int) async throws -> [ExchangeSummary] {
+    func fetchExchangesList(page: Int, limit: Int) async throws(ServiceError) -> [ExchangeSummary] {
         await MainActor.run {
             calledMethods.append(.fetchExchangesList)
         }
@@ -34,7 +34,7 @@ final class HomeServiceProtocolSpy: HomeServiceProtocol, Sendable {
         return try result.get()
     }
 
-    func fetchDetailsFor(ids: [String]) async throws -> [ExchangeDetail] {
+    func fetchDetailsFor(ids: [String]) async throws(ServiceError) -> [ExchangeDetail] {
         await MainActor.run {
             calledMethods.append(.fetchDetailsFor)
         }

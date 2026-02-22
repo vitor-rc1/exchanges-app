@@ -15,9 +15,9 @@ final class NetworkServiceProtocolSpy: NetworkServiceProtocol, @unchecked Sendab
     }
 
     var calledMethods: [Method] = []
-    var requestResult: Result<(Data, HTTPURLResponse), Error>?
+    var requestResult: Result<(Data, HTTPURLResponse), NetworkError>?
 
-    func request(endpoint: APIEndpointProtocol) async throws -> (Data, HTTPURLResponse) {
+    func request(endpoint: APIEndpointProtocol) async throws(NetworkError) -> (Data, HTTPURLResponse) {
         calledMethods.append(.request)
 
         guard let result = requestResult else {

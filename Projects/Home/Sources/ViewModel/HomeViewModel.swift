@@ -93,11 +93,13 @@ final class HomeViewModel: HomeViewModelProtocol {
                     switch serviceError {
                     case .decodeFail, .none:
                         message = defaultMessage
-                    case .network(let status):
+                    case let .network(status):
                         message = status.errorMessage ?? defaultMessage
                         if let statusCode = status.errorCode {
                             code = String(statusCode)
                         }
+                    case let .requestError(error):
+                        message = error ?? defaultMessage
                     }
                     state = .error(message, code)
                 } else {
