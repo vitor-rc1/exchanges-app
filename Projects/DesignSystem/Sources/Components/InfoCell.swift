@@ -4,36 +4,6 @@ public final class InfoCell: UITableViewCell {
 
     public static let identifier = "InfoCell"
 
-    // MARK: - Models
-    public enum State {
-        case loaded(Model)
-        case partialLoaded(String)
-        case loading
-    }
-
-    public struct Model {
-        public let url: String
-        public let title: String
-        public let subtitle: String
-        public let detail: String?
-        public let defaultImage: UIImage?
-        public let hideChevron: Bool
-
-        public init(url: String,
-                    title: String,
-                    subtitle: String,
-                    detail: String? = nil,
-                    defaultImage: UIImage? = nil,
-                    hiddenChevron: Bool = false) {
-            self.url = url
-            self.title = title
-            self.subtitle = subtitle
-            self.detail = detail
-            self.defaultImage = defaultImage
-            self.hideChevron = hiddenChevron
-        }
-    }
-
     // MARK: - UI Components
     private lazy var containerView: UIView = {
         let view = UIView()
@@ -54,7 +24,8 @@ public final class InfoCell: UITableViewCell {
 
     private lazy var chevronImageView: UIImageView = {
         let config = UIImage.SymbolConfiguration(pointSize: 14, weight: .semibold)
-        let imageView = UIImageView(image: UIImage(systemName: "chevron.right", withConfiguration: config))
+        let imageView = UIImageView(image: UIImage(systemName: "chevron.right",
+                                                   withConfiguration: config))
         imageView.tintColor = .tertiaryLabel
         imageView.translatesAutoresizingMaskIntoConstraints = false
         imageView.isHidden = true
@@ -109,17 +80,18 @@ public final class InfoCell: UITableViewCell {
             loadImage(from: model.url)
             chevronImageView.isHidden = model.hideChevron
 
-        case let .partialLoaded(title):
+        case let .partialLoaded(model):
             iconImageView.image = defaultImage
-            titleLabel.text = title
+            titleLabel.text = model.title
             subtitleLabel.text = " "
             subtitleLabel.setSkeleton(true)
             detailLabel.isHidden = false
             detailLabel.text = " "
             detailLabel.setSkeleton(true)
+            chevronImageView.isHidden = model.hideChevron
 
         case .loading:
-            iconImageView.setSkeleton(true, cornerRadius: 11)
+            iconImageView.setSkeleton(true, cornerRadius: 12)
             titleLabel.text = " "
             titleLabel.setSkeleton(true)
             subtitleLabel.text = " "
@@ -127,6 +99,50 @@ public final class InfoCell: UITableViewCell {
             detailLabel.isHidden = false
             detailLabel.text = " "
             detailLabel.setSkeleton(true)
+            chevronImageView.isHidden = true
+        }
+    }
+}
+
+// MARK: - Models
+extension InfoCell {
+    public enum State {
+        case loaded(LoadedModel)
+        case partialLoaded(PartialModel)
+        case loading
+    }
+
+    public struct LoadedModel {
+        public let url: String
+        public let title: String
+        public let subtitle: String
+        public let detail: String?
+        public let defaultImage: UIImage?
+        public let hideChevron: Bool
+
+        public init(url: String,
+                    title: String,
+                    subtitle: String,
+                    detail: String? = nil,
+                    defaultImage: UIImage? = nil,
+                    hiddenChevron: Bool = false) {
+            self.url = url
+            self.title = title
+            self.subtitle = subtitle
+            self.detail = detail
+            self.defaultImage = defaultImage
+            self.hideChevron = hiddenChevron
+        }
+    }
+
+    public struct PartialModel {
+        public let title: String
+        public let hideChevron: Bool
+
+        public init(title: String,
+                    hiddenChevron: Bool = false) {
+            self.title = title
+            self.hideChevron = hiddenChevron
         }
     }
 }
@@ -240,7 +256,9 @@ import SwiftUI
 @available(iOS 17.0, *)
 #Preview("Partial Loaded") {
     let view = InfoCell()
-    view.configure(state: .partialLoaded("Binance"))
+    view.configure(state: .partialLoaded(.init(
+        title: "Binance"
+    )))
     view.backgroundColor = .gray
     return view
 }

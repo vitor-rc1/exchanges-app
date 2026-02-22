@@ -140,7 +140,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
         case .loaded:
             let item = viewModel.item(at: indexPath.row)
             if item.isLoadingDetails {
-                cell.configure(state: .partialLoaded(item.name))
+                cell.configure(state: .partialLoaded(.init(title: item.name)))
             } else {
                 let volPrice = "Vol: \(viewModel.formatPrice(item.spotVolumeUsd ?? 0.0))"
                 let dateLaunched = "Date launched: \(viewModel.formatDate(item.dateLaunched))"
