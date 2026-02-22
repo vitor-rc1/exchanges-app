@@ -148,8 +148,8 @@ extension InfoCell: ViewCode {
     }
 
     public func setUpConstraints() {
-        let horizontalPadding = DSSpacings.large.rawValue
-        let verticalPadding = DSSpacings.small.rawValue
+        let horizontalPadding = DSSpacings.large
+        let verticalPadding = DSSpacings.small
 
         NSLayoutConstraint.activate([
             containerView.heightAnchor.constraint(greaterThanOrEqualToConstant: 84),

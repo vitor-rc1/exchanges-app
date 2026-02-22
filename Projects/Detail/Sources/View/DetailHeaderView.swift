@@ -14,7 +14,7 @@ final class DetailHeaderView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .secondarySystemGroupedBackground
-        view.layer.cornerRadius = DSSpacings.large.rawValue
+        view.layer.cornerRadius = DSSpacings.large
         view.clipsToBounds = true
         return view
     }()
@@ -85,7 +85,7 @@ final class DetailHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [dateLaunchedLabel, makerFeeLabel, takerFeeLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = DSSpacings.xSmall.rawValue
+        stackView.spacing = DSSpacings.xSmall
         return stackView
     }()
 
@@ -128,7 +128,7 @@ final class DetailHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [twitterButton, websiteButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = DSSpacings.large.rawValue
+        stackView.spacing = DSSpacings.large
         return stackView
     }()
 
@@ -182,8 +182,8 @@ extension DetailHeaderView: ViewCode {
     }
 
     func setUpConstraints() {
-        let padding = DSSpacings.large.rawValue
-        let innerPadding = DSSpacings.medium.rawValue
+        let padding = DSSpacings.large
+        let innerPadding = DSSpacings.medium
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
@@ -202,16 +202,16 @@ extension DetailHeaderView: ViewCode {
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
 
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                                  constant: DSSpacings.small.rawValue),
+                                                  constant: DSSpacings.small ),
             descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
 
             topSeparator.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,
                                               constant: innerPadding),
             topSeparator.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                  constant: DSSpacings.xLarge.rawValue),
+                                                  constant: DSSpacings.xLarge),
             topSeparator.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                   constant: -DSSpacings.xLarge.rawValue),
+                                                   constant: -DSSpacings.xLarge),
             topSeparator.heightAnchor.constraint(equalToConstant: 3.0 / UIScreen.main.scale),
 
             infoStackView.topAnchor.constraint(equalTo: topSeparator.bottomAnchor, constant: innerPadding),
@@ -221,9 +221,9 @@ extension DetailHeaderView: ViewCode {
             bottomSeparator.topAnchor.constraint(equalTo: infoStackView.bottomAnchor,
                                                  constant: innerPadding),
             bottomSeparator.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                     constant: DSSpacings.xLarge.rawValue),
+                                                     constant: DSSpacings.xLarge),
             bottomSeparator.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                      constant: -DSSpacings.xLarge.rawValue),
+                                                      constant: -DSSpacings.xLarge),
             bottomSeparator.heightAnchor.constraint(equalToConstant: 3.0 / UIScreen.main.scale),
 
             twitterButton.widthAnchor.constraint(equalToConstant: 36),

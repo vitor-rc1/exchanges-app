@@ -16,7 +16,7 @@ final class AssetTableViewCell: UITableViewCell {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .secondarySystemGroupedBackground
-        view.layer.cornerRadius = DSSpacings.medium.rawValue
+        view.layer.cornerRadius = DSSpacings.medium
         view.clipsToBounds = true
         return view
     }()
@@ -51,7 +51,7 @@ final class AssetTableViewCell: UITableViewCell {
         let stackView = UIStackView(arrangedSubviews: [nameLabel, priceLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = DSSpacings.xSmall.rawValue
+        stackView.spacing = DSSpacings.xSmall
         return stackView
     }()
 
@@ -91,8 +91,8 @@ extension AssetTableViewCell: ViewCode {
     }
 
     func setUpConstraints() {
-        let horizontalPadding = DSSpacings.large.rawValue
-        let verticalPadding = DSSpacings.small.rawValue
+        let horizontalPadding = DSSpacings.large
+        let verticalPadding = DSSpacings.small
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(greaterThanOrEqualTo: contentView.topAnchor,
@@ -105,18 +105,20 @@ extension AssetTableViewCell: ViewCode {
                                                     constant: -horizontalPadding),
             containerView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
 
-            iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: horizontalPadding),
+            iconImageView.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
+                                                   constant: horizontalPadding),
             iconImageView.centerYAnchor.constraint(equalTo: containerView.centerYAnchor),
             iconImageView.widthAnchor.constraint(equalToConstant: 42),
             iconImageView.heightAnchor.constraint(equalToConstant: 42),
 
             textStackView.leadingAnchor.constraint(equalTo: iconImageView.trailingAnchor,
                                                    constant: horizontalPadding),
-            textStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor, constant: -horizontalPadding),
+            textStackView.trailingAnchor.constraint(equalTo: contentView.trailingAnchor,
+                                                    constant: -horizontalPadding),
             textStackView.topAnchor.constraint(equalTo: containerView.topAnchor,
-                                               constant: DSSpacings.small.rawValue),
+                                               constant: DSSpacings.small),
             textStackView.bottomAnchor.constraint(equalTo: containerView.bottomAnchor,
-                                                  constant: -DSSpacings.medium.rawValue)
+                                                  constant: -DSSpacings.medium)
         ])
     }
 

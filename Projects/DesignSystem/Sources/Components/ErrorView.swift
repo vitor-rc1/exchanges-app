@@ -48,17 +48,17 @@ public final class ErrorView: UIView {
         button.titleLabel?.font = DSFonts.bodyRegular
         button.tintColor = .systemBlue
         button.backgroundColor = .systemBlue.withAlphaComponent(0.15)
-        button.layer.cornerRadius = DSSpacings.medium.rawValue
+        button.layer.cornerRadius = DSSpacings.medium
         button.contentEdgeInsets = UIEdgeInsets(
-            top: DSSpacings.medium.rawValue,
-            left: DSSpacings.xLarge.rawValue,
-            bottom: DSSpacings.medium.rawValue,
-            right: DSSpacings.xLarge.rawValue
+            top: DSSpacings.medium,
+            left: DSSpacings.xLarge,
+            bottom: DSSpacings.medium,
+            right: DSSpacings.xLarge
         )
         button.imageEdgeInsets = UIEdgeInsets(top: 0,
-                                              left: -DSSpacings.small.rawValue,
+                                              left: -DSSpacings.small,
                                               bottom: 0,
-                                              right: DSSpacings.small.rawValue)
+                                              right: DSSpacings.small)
         button.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -67,7 +67,7 @@ public final class ErrorView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, messageLabel, codeLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.spacing = DSSpacings.medium.rawValue
+        stackView.spacing = DSSpacings.medium
         return stackView
     }()
 
@@ -75,7 +75,7 @@ public final class ErrorView: UIView {
         let stackView = UIStackView(arrangedSubviews: [iconImageView, textStackView, retryButton])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = DSSpacings.xLarge.rawValue
+        stackView.spacing = DSSpacings.xLarge
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -124,8 +124,10 @@ extension ErrorView: ViewCode {
             mainStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             mainStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DSSpacings.xLarge.rawValue),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DSSpacings.xLarge.rawValue)
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                   constant: DSSpacings.xLarge),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                    constant: -DSSpacings.xLarge)
         ])
     }
 }
