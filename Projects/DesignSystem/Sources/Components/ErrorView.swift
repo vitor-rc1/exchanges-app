@@ -14,7 +14,7 @@ public final class ErrorView: UIView {
 
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .title2)
+        label.font = DSFonts.titl2eRegular
         label.textColor = .label
         label.textAlignment = .center
         label.numberOfLines = 1
@@ -23,7 +23,7 @@ public final class ErrorView: UIView {
 
     private lazy var messageLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .callout)
+        label.font = DSFonts.calloutRegular
         label.textColor = .secondaryLabel
         label.textAlignment = .center
         label.numberOfLines = 0
@@ -32,7 +32,7 @@ public final class ErrorView: UIView {
 
     private lazy var codeLabel: UILabel = {
         let label = UILabel()
-        label.font = .preferredFont(forTextStyle: .footnote)
+        label.font = DSFonts.footnoteRegular
         label.textColor = .tertiaryLabel
         label.textAlignment = .right
         label.numberOfLines = 1
@@ -44,21 +44,20 @@ public final class ErrorView: UIView {
         let button = UIButton(type: .system)
         let image = UIImage(systemName: "arrow.clockwise")
         button.setImage(image, for: .normal)
-        button.setTitle("Try again", for: .normal)
-        button.titleLabel?.font = .preferredFont(forTextStyle: .body)
+        button.titleLabel?.font = DSFonts.bodyRegular
         button.tintColor = .systemBlue
         button.backgroundColor = .systemBlue.withAlphaComponent(0.15)
-        button.layer.cornerRadius = DSSpacings.medium.rawValue
+        button.layer.cornerRadius = DSSpacings.medium
         button.contentEdgeInsets = UIEdgeInsets(
-            top: DSSpacings.medium.rawValue,
-            left: DSSpacings.xLarge.rawValue,
-            bottom: DSSpacings.medium.rawValue,
-            right: DSSpacings.xLarge.rawValue
+            top: DSSpacings.medium,
+            left: DSSpacings.xLarge,
+            bottom: DSSpacings.medium,
+            right: DSSpacings.xLarge
         )
         button.imageEdgeInsets = UIEdgeInsets(top: 0,
-                                              left: -DSSpacings.small.rawValue,
+                                              left: -DSSpacings.small,
                                               bottom: 0,
-                                              right: DSSpacings.small.rawValue)
+                                              right: DSSpacings.small)
         button.addTarget(self, action: #selector(retryButtonTapped), for: .touchUpInside)
         return button
     }()
@@ -67,7 +66,7 @@ public final class ErrorView: UIView {
         let stackView = UIStackView(arrangedSubviews: [titleLabel, messageLabel, codeLabel])
         stackView.axis = .vertical
         stackView.alignment = .fill
-        stackView.spacing = DSSpacings.medium.rawValue
+        stackView.spacing = DSSpacings.medium
         return stackView
     }()
 
@@ -75,7 +74,7 @@ public final class ErrorView: UIView {
         let stackView = UIStackView(arrangedSubviews: [iconImageView, textStackView, retryButton])
         stackView.axis = .vertical
         stackView.alignment = .center
-        stackView.spacing = DSSpacings.xLarge.rawValue
+        stackView.spacing = DSSpacings.xLarge
         stackView.translatesAutoresizingMaskIntoConstraints = false
         return stackView
     }()
@@ -104,9 +103,7 @@ public final class ErrorView: UIView {
             codeLabel.isHidden = false
         }
 
-        if let buttonText {
-            retryButton.setTitle(buttonText, for: .normal)
-        }
+        retryButton.setTitle(buttonText ?? "Try again", for: .normal)
     }
 
     @objc private func retryButtonTapped() {
@@ -124,8 +121,10 @@ extension ErrorView: ViewCode {
             mainStackView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
             mainStackView.bottomAnchor.constraint(lessThanOrEqualTo: bottomAnchor),
             mainStackView.centerYAnchor.constraint(equalTo: centerYAnchor),
-            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor, constant: DSSpacings.xLarge.rawValue),
-            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor, constant: -DSSpacings.xLarge.rawValue)
+            mainStackView.leadingAnchor.constraint(equalTo: leadingAnchor,
+                                                   constant: DSSpacings.xLarge),
+            mainStackView.trailingAnchor.constraint(equalTo: trailingAnchor,
+                                                    constant: -DSSpacings.xLarge)
         ])
     }
 }

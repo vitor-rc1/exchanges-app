@@ -5,7 +5,7 @@
 //  github.com/vitor-rc1
 //
 //
-    
+
 import UIKit
 
 public extension UIView {

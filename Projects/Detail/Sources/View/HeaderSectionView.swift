@@ -15,7 +15,7 @@ final class HeaderSectionView: UITableViewHeaderFooterView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 20, weight: .semibold)
+        label.font = DSFonts.title3Emphasized
         label.textColor = .label
         return label
     }()
@@ -64,14 +64,14 @@ extension HeaderSectionView: ViewCode {
     func setUpConstraints() {
         NSLayoutConstraint.activate([
             stackView.leadingAnchor.constraint(equalTo: contentView.leadingAnchor,
-                                               constant: DSSpacings.large.rawValue),
+                                               constant: DSSpacings.large ),
             stackView.centerYAnchor.constraint(equalTo: contentView.centerYAnchor),
             stackView.trailingAnchor.constraint(lessThanOrEqualTo: contentView.trailingAnchor,
-                                                constant: -DSSpacings.large.rawValue),
+                                                constant: -DSSpacings.large ),
             stackView.topAnchor.constraint(equalTo: contentView.topAnchor,
-                                           constant: DSSpacings.medium.rawValue),
+                                           constant: DSSpacings.medium ),
             stackView.bottomAnchor.constraint(equalTo: contentView.bottomAnchor,
-                                              constant: -DSSpacings.medium.rawValue)
+                                              constant: -DSSpacings.medium )
         ])
     }
 }

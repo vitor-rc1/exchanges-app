@@ -14,7 +14,7 @@ final class DetailHeaderView: UIView {
         let view = UIView()
         view.translatesAutoresizingMaskIntoConstraints = false
         view.backgroundColor = .secondarySystemGroupedBackground
-        view.layer.cornerRadius = DSSpacings.large.rawValue
+        view.layer.cornerRadius = DSSpacings.large
         view.clipsToBounds = true
         return view
     }()
@@ -33,7 +33,7 @@ final class DetailHeaderView: UIView {
     private lazy var titleLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 16, weight: .semibold)
+        label.font = DSFonts.calloutEmphasized
         label.textColor = .label
         return label
     }()
@@ -41,7 +41,7 @@ final class DetailHeaderView: UIView {
     private lazy var descriptionLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         label.numberOfLines = 10
         label.setContentCompressionResistancePriority(.defaultLow, for: .vertical)
@@ -58,7 +58,7 @@ final class DetailHeaderView: UIView {
     private lazy var dateLaunchedLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         return label
     }()
@@ -66,7 +66,7 @@ final class DetailHeaderView: UIView {
     private lazy var makerFeeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         label.textAlignment = .left
         return label
@@ -75,7 +75,7 @@ final class DetailHeaderView: UIView {
     private lazy var takerFeeLabel: UILabel = {
         let label = UILabel()
         label.translatesAutoresizingMaskIntoConstraints = false
-        label.font = .systemFont(ofSize: 11, weight: .regular)
+        label.font = DSFonts.captionRegular
         label.textColor = .secondaryLabel
         label.textAlignment = .left
         return label
@@ -85,7 +85,7 @@ final class DetailHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [dateLaunchedLabel, makerFeeLabel, takerFeeLabel])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .vertical
-        stackView.spacing = DSSpacings.xSmall.rawValue
+        stackView.spacing = DSSpacings.xSmall
         return stackView
     }()
 
@@ -128,7 +128,7 @@ final class DetailHeaderView: UIView {
         let stackView = UIStackView(arrangedSubviews: [twitterButton, websiteButton])
         stackView.translatesAutoresizingMaskIntoConstraints = false
         stackView.axis = .horizontal
-        stackView.spacing = DSSpacings.large.rawValue
+        stackView.spacing = DSSpacings.large
         return stackView
     }()
 
@@ -182,8 +182,8 @@ extension DetailHeaderView: ViewCode {
     }
 
     func setUpConstraints() {
-        let padding = DSSpacings.large.rawValue
-        let innerPadding = DSSpacings.medium.rawValue
+        let padding = DSSpacings.large
+        let innerPadding = DSSpacings.medium
 
         NSLayoutConstraint.activate([
             containerView.topAnchor.constraint(greaterThanOrEqualTo: topAnchor),
@@ -202,16 +202,16 @@ extension DetailHeaderView: ViewCode {
             titleLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
 
             descriptionLabel.topAnchor.constraint(equalTo: titleLabel.bottomAnchor,
-                                                  constant: DSSpacings.small.rawValue),
+                                                  constant: DSSpacings.small ),
             descriptionLabel.leadingAnchor.constraint(equalTo: containerView.leadingAnchor, constant: padding),
             descriptionLabel.trailingAnchor.constraint(equalTo: containerView.trailingAnchor, constant: -padding),
 
             topSeparator.topAnchor.constraint(equalTo: descriptionLabel.bottomAnchor,
                                               constant: innerPadding),
             topSeparator.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                  constant: DSSpacings.xLarge.rawValue),
+                                                  constant: DSSpacings.xLarge),
             topSeparator.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                   constant: -DSSpacings.xLarge.rawValue),
+                                                   constant: -DSSpacings.xLarge),
             topSeparator.heightAnchor.constraint(equalToConstant: 3.0 / UIScreen.main.scale),
 
             infoStackView.topAnchor.constraint(equalTo: topSeparator.bottomAnchor, constant: innerPadding),
@@ -221,9 +221,9 @@ extension DetailHeaderView: ViewCode {
             bottomSeparator.topAnchor.constraint(equalTo: infoStackView.bottomAnchor,
                                                  constant: innerPadding),
             bottomSeparator.leadingAnchor.constraint(equalTo: containerView.leadingAnchor,
-                                                     constant: DSSpacings.xLarge.rawValue),
+                                                     constant: DSSpacings.xLarge),
             bottomSeparator.trailingAnchor.constraint(equalTo: containerView.trailingAnchor,
-                                                      constant: -DSSpacings.xLarge.rawValue),
+                                                      constant: -DSSpacings.xLarge),
             bottomSeparator.heightAnchor.constraint(equalToConstant: 3.0 / UIScreen.main.scale),
 
             twitterButton.widthAnchor.constraint(equalToConstant: 36),
