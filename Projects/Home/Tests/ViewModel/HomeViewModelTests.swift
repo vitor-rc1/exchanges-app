@@ -15,7 +15,6 @@ import Testing
 @MainActor
 @Suite
 struct HomeViewModelTests {
-
     @Test("GIVEN empty state WHEN loadData is called THEN fetches exchanges and updates state to empty")
     func testLoadDataSuccess() async throws {
         let (sut, doubles) = makeSut()
@@ -35,8 +34,12 @@ struct HomeViewModelTests {
     func testLoadDataError() async throws {
         let (sut, doubles) = makeSut()
         let messageError = "Failed to Load data. Press try again later or check your connection."
-        let error = NSError(domain: "test", code: 1, userInfo: [NSLocalizedDescriptionKey: "Network error"])
-        doubles.serviceSpy.fetchExchangesListResult = .failure(error)
+        let serviceError = ServiceError.network(.init(timestamp: "",
+                                                      errorCode: 1,
+                                                      errorMessage: messageError,
+                                                      elapsed: 0,
+                                                      creditCount: 0))
+        doubles.serviceSpy.fetchExchangesListResult = .failure(serviceError)
 
         sut.loadData()
 
@@ -45,7 +48,53 @@ struct HomeViewModelTests {
         #expect(doubles.serviceSpy.calledMethods.contains(.fetchExchangesList))
         #expect(sut.numberOfItems == 0)
         #expect(doubles.delegateSpy.calledMethods == [.didUpdateState(.loading),
-                                                      .didUpdateState(.error(messageError, nil))])
+                                                      .didUpdateState(.error(messageError, "1"))])
+    }
+
+    @Test("GIVEN empty state WHEN loadData fails with decodeFail THEN updates state to error with default message")
+    func testLoadDataDecodeFailError() async throws {
+        let (sut, doubles) = makeSut()
+        doubles.serviceSpy.fetchExchangesListResult = .failure(.decodeFail(nil))
+
+        sut.loadData()
+
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        #expect(doubles.serviceSpy.calledMethods.contains(.fetchExchangesList))
+        #expect(sut.numberOfItems == 0)
+        #expect(doubles.delegateSpy.calledMethods == [.didUpdateState(.loading),
+                                                      .didUpdateState(.error("Failed to load data. Press try again or check your connection.", nil))])
+    }
+
+    @Test("GIVEN empty state WHEN loadData fails with requestError THEN updates state to error with request error message")
+    func testLoadDataRequestError() async throws {
+        let (sut, doubles) = makeSut()
+        let errorMessage = "Request timed out."
+        doubles.serviceSpy.fetchExchangesListResult = .failure(.requestError(errorMessage))
+
+        sut.loadData()
+
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        #expect(doubles.serviceSpy.calledMethods.contains(.fetchExchangesList))
+        #expect(sut.numberOfItems == 0)
+        #expect(doubles.delegateSpy.calledMethods == [.didUpdateState(.loading),
+                                                      .didUpdateState(.error(errorMessage, nil))])
+    }
+
+    @Test("GIVEN empty state WHEN loadData fails with requestError nil message THEN updates state to error with default message")
+    func testLoadDataRequestErrorNilMessage() async throws {
+        let (sut, doubles) = makeSut()
+        doubles.serviceSpy.fetchExchangesListResult = .failure(.requestError(nil))
+
+        sut.loadData()
+
+        try await Task.sleep(nanoseconds: 100_000_000)
+
+        #expect(doubles.serviceSpy.calledMethods.contains(.fetchExchangesList))
+        #expect(sut.numberOfItems == 0)
+        #expect(doubles.delegateSpy.calledMethods == [.didUpdateState(.loading),
+                                                      .didUpdateState(.error("Failed to load data. Press try again or check your connection.", nil))])
     }
 
     @Test("GIVEN empty state WHEN loadData returns empty array THEN updates state to empty")

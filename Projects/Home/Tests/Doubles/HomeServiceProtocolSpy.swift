@@ -13,33 +13,35 @@ import HomeInterfaces
 
 @MainActor
 final class HomeServiceProtocolSpy: HomeServiceProtocol, Sendable {
-    enum Method: Equatable {
+    enum Method: Equatable, Sendable {
         case fetchExchangesList
         case fetchDetailsFor
     }
 
     var calledMethods: [Method] = []
-    var fetchExchangesListResult: Result<[ExchangeSummary], Error>?
-    var fetchDetailsForResult: Result<[ExchangeDetail], Error>?
+    var fetchExchangesListResult: Result<[ExchangeSummary], ServiceError>?
+    var fetchDetailsForResult: Result<[ExchangeDetail], ServiceError>?
 
-    func fetchExchangesList(page: Int, limit: Int) async throws -> [ExchangeSummary] {
+    @concurrent
+    func fetchExchangesList(page: Int, limit: Int) async throws(ServiceError) -> [ExchangeSummary] {
         await MainActor.run {
             calledMethods.append(.fetchExchangesList)
         }
 
-        guard let result = fetchExchangesListResult else {
+        guard let result = await fetchExchangesListResult else {
             fatalError("fetchExchangesListResult not set")
         }
 
         return try result.get()
     }
 
-    func fetchDetailsFor(ids: [String]) async throws -> [ExchangeDetail] {
+    @concurrent
+    func fetchDetailsFor(ids: [String]) async throws(ServiceError) -> [ExchangeDetail] {
         await MainActor.run {
             calledMethods.append(.fetchDetailsFor)
         }
 
-        guard let result = fetchDetailsForResult else {
+        guard let result = await fetchDetailsForResult else {
             fatalError("fetchDetailsForResult not set")
         }
 

@@ -5,8 +5,8 @@
       "kind" : "remoteSourceControl",
       "location" : "https://github.com/vitor-rc1/networking-package.git",
       "state" : {
-        "revision" : "b5498ee2ab408592d4db9a9c95faec3a08de9ea2",
-        "version" : "1.1.0"
+        "revision" : "2fe707c620272b40e2c5a4fe258480bebae6e483",
+        "version" : "1.2.0"
       }
     },
     {
