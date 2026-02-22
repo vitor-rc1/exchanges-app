@@ -136,7 +136,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
 
         switch viewModel.state {
         case .loading:
-            cell.configure(state: .loading)
+            cell.configure(state: .loading())
         case .loaded:
             let item = viewModel.item(at: indexPath.row)
             if item.isLoadingDetails {

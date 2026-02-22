@@ -85,20 +85,24 @@ public final class InfoCell: UITableViewCell {
             titleLabel.text = model.title
             subtitleLabel.text = " "
             subtitleLabel.setSkeleton(true)
-            detailLabel.isHidden = false
-            detailLabel.text = " "
-            detailLabel.setSkeleton(true)
+            detailLabel.isHidden = model.lines < 3
+            if model.lines >= 3 {
+                detailLabel.text = " "
+                detailLabel.setSkeleton(true)
+            }
             chevronImageView.isHidden = model.hideChevron
 
-        case .loading:
+        case let .loading(lines):
             iconImageView.setSkeleton(true, cornerRadius: 12)
             titleLabel.text = " "
             titleLabel.setSkeleton(true)
             subtitleLabel.text = " "
             subtitleLabel.setSkeleton(true)
-            detailLabel.isHidden = false
-            detailLabel.text = " "
-            detailLabel.setSkeleton(true)
+            detailLabel.isHidden = lines < 3
+            if lines >= 3 {
+                detailLabel.text = " "
+                detailLabel.setSkeleton(true)
+            }
             chevronImageView.isHidden = true
         }
     }
@@ -109,7 +113,7 @@ extension InfoCell {
     public enum State {
         case loaded(LoadedModel)
         case partialLoaded(PartialModel)
-        case loading
+        case loading(lines: Int = 3)
     }
 
     public struct LoadedModel {
@@ -138,11 +142,14 @@ extension InfoCell {
     public struct PartialModel {
         public let title: String
         public let hideChevron: Bool
+        public let lines: Int
 
         public init(title: String,
-                    hiddenChevron: Bool = false) {
+                    hiddenChevron: Bool = false,
+                    lines: Int = 3) {
             self.title = title
             self.hideChevron = hiddenChevron
+            self.lines = lines
         }
     }
 }
@@ -264,9 +271,17 @@ import SwiftUI
 }
 
 @available(iOS 17.0, *)
-#Preview("Loading") {
+#Preview("Loading - 3 lines") {
     let view = InfoCell()
-    view.configure(state: .loading)
+    view.configure(state: .loading())
+    view.backgroundColor = .gray
+    return view
+}
+
+@available(iOS 17.0, *)
+#Preview("Loading - 2 lines") {
+    let view = InfoCell()
+    view.configure(state: .loading(lines: 2))
     view.backgroundColor = .gray
     return view
 }
