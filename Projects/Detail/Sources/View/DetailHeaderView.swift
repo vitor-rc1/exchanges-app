@@ -144,7 +144,7 @@ final class DetailHeaderView: UIView {
     func configure(with model: ExchangeDetailModel) {
         titleLabel.text = "\(model.name) - ID \(model.id)"
         descriptionLabel.text = model.description
-        dateLaunchedLabel.text = "Date launched: \(model.dateLaunched)"
+        dateLaunchedLabel.text = model.dateLaunched
         makerFeeLabel.text = "Maker: \(formatPercentage(model.makerFee))"
         takerFeeLabel.text = "Taker: \(formatPercentage(model.takerFee))"
         loadImage(from: model.logoUrl)

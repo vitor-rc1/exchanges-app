@@ -6,8 +6,9 @@
 //
 //
 
-import HomeInterfaces
 import Foundation
+import Helpers
+import HomeInterfaces
 
 @MainActor
 final class HomeViewModel: HomeViewModelProtocol {
@@ -15,6 +16,7 @@ final class HomeViewModel: HomeViewModelProtocol {
     weak var coordinatorDelegate: HomeViewModelCoordinatorDelegate?
 
     private let service: HomeServiceProtocol
+    private let stringFormatter: StringFormatter
     private let defaultMessage = "Failed to load data. Press try again or check your connection."
 
     private var currentPage = 1
@@ -28,8 +30,10 @@ final class HomeViewModel: HomeViewModelProtocol {
 
     var numberOfItems: Int { exchanges.count }
 
-    init(service: HomeServiceProtocol) {
+    init(service: HomeServiceProtocol,
+         stringFormatter: StringFormatter) {
         self.service = service
+        self.stringFormatter = stringFormatter
     }
 
     func loadData() {
@@ -107,7 +111,6 @@ final class HomeViewModel: HomeViewModelProtocol {
     }
 
     func didSelectRow(at index: Int) {
-        guard exchanges.indices.contains(index) else { return }
         coordinatorDelegate?.navigateToDetails(of: exchanges[index])
     }
 
@@ -119,7 +122,7 @@ final class HomeViewModel: HomeViewModelProtocol {
                         spotVolumeUsd: detail.spotVolumeUsd,
                         makerFee: detail.makerFee,
                         takerFee: detail.takerFee,
-                        dateLaunched: detail.dateLaunched,
+                        dateLaunched: "Date launched: \(stringFormatter.formatDate(detail.dateLaunched))",
                         websiteUrl: detail.urls.website.first,
                         twitterUrl: detail.urls.twitter.first)
     }

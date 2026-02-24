@@ -7,13 +7,19 @@
 
 import Foundation
 
-public extension String {
-    func formatDate(locale: Locale = .current) -> String {
+public struct StringFormatter {
+    let locale: Locale
+
+    public init(locale: Locale = .current) {
+        self.locale = locale
+    }
+
+    public func formatDate(_ date: String) -> String {
         let isoFormatter = ISO8601DateFormatter()
         isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
 
-        guard let date = isoFormatter.date(from: self) else {
-            return self
+        guard let date = isoFormatter.date(from: date) else {
+            return date
         }
 
         let displayFormatter = DateFormatter()

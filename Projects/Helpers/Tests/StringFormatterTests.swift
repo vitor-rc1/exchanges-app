@@ -1,5 +1,5 @@
 //
-//  DateStringFormatter.swift
+//  StringFormatter.swift
 //  Helpers
 //
 //  Created by Vitor Conceicao on 23/02/26.
@@ -10,8 +10,8 @@ import Testing
 
 @testable import Helpers
 
-@Suite("DateStringFormatter Tests")
-struct DateStringFormatterTests {
+@Suite("StringFormatter Tests")
+struct StringFormatterTests {
     
     @Test("GIVEN a valid ISO8601 date string WHEN formatDate is called with custom locale THEN returns formatted date for that locale")
     func testFormatDateWithCustomLocale() {
@@ -19,7 +19,7 @@ struct DateStringFormatterTests {
         let usLocale = Locale(identifier: "en_US")
         let expected = "2/23/26"
 
-        let result = dateString.formatDate(locale: usLocale)
+        let result = StringFormatter(locale: usLocale).formatDate(dateString)
 
         #expect(result == expected)
     }
@@ -29,7 +29,7 @@ struct DateStringFormatterTests {
         let dateString = "2026-02-23T10:00:00.000Z"
         let ptBRLocale = Locale(identifier: "pt_BR")
 
-        let result = dateString.formatDate(locale: ptBRLocale)
+        let result = StringFormatter(locale: ptBRLocale).formatDate(dateString)
 
         let expected = "23/02/2026"
 
@@ -45,7 +45,7 @@ struct DateStringFormatterTests {
             "2020/01/01"
           ])
     func testFormatDateVariousInvalidDates(dateString: String) {
-        let result = dateString.formatDate()
+        let result = StringFormatter().formatDate(dateString)
 
         #expect(result == dateString)
     }

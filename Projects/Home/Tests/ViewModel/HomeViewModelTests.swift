@@ -125,7 +125,7 @@ struct HomeViewModelTests {
             spotVolumeUsd: 1000000.0,
             makerFee: 0.001,
             takerFee: 0.002,
-            dateLaunched: "2017-07-14",
+            dateLaunched: "14-07-2017",
             urls: ExchangeURLs(website: ["https://binance.com"], twitter: ["@binance"])
         )
         let exchange = Exchange(id: 1,
@@ -135,7 +135,7 @@ struct HomeViewModelTests {
                                 spotVolumeUsd: 1000000.0,
                                 makerFee: 0.001,
                                 takerFee: 0.002,
-                                dateLaunched: "2017-07-14",
+                                dateLaunched: "Date launched: 14-07-2017",
                                 websiteUrl: "https://binance.com",
                                 twitterUrl: "@binance"
                             )
@@ -228,8 +228,9 @@ extension HomeViewModelTests {
         let serviceSpy = HomeServiceProtocolSpy()
         let delegateSpy = HomeViewModelDelegateSpy()
         let coordinatorDelegateSpy = HomeViewModelCoordinatorDelegateSpy()
-
-        let sut = HomeViewModel(service: serviceSpy)
+        let ptBRLocale = Locale(identifier: "pt_BR")
+        let sut = HomeViewModel(service: serviceSpy,
+                                stringFormatter: .init(locale: ptBRLocale))
         sut.delegate = delegateSpy
         sut.coordinatorDelegate = coordinatorDelegateSpy
 
