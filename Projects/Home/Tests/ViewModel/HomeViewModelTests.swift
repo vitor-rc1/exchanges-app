@@ -132,7 +132,7 @@ struct HomeViewModelTests {
                                 name: "Binance",
                                 description: "Binance Exchange",
                                 logo: "https://logo.url",
-                                spotVolumeUsd: 1000000.0,
+                                spotVolumeUsd: "$ 1.000.000,00",
                                 makerFee: 0.001,
                                 takerFee: 0.002,
                                 dateLaunched: "Date launched: 14-07-2017",

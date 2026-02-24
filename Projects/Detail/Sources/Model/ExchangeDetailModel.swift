@@ -14,7 +14,7 @@ struct ExchangeDetailModel: Equatable {
     let name: String
     let description: String
     let logoUrl: String
-    let spotVolumeUsd: Double?
+    let spotVolumeUsd: String
     let makerFee: Double
     let takerFee: Double
     let dateLaunched: String
