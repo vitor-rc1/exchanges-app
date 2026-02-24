@@ -125,17 +125,17 @@ struct HomeViewModelTests {
             spotVolumeUsd: 1000000.0,
             makerFee: 0.001,
             takerFee: 0.002,
-            dateLaunched: "2017-07-14",
+            dateLaunched: "14-07-2017",
             urls: ExchangeURLs(website: ["https://binance.com"], twitter: ["@binance"])
         )
         let exchange = Exchange(id: 1,
                                 name: "Binance",
                                 description: "Binance Exchange",
                                 logo: "https://logo.url",
-                                spotVolumeUsd: 1000000.0,
+                                spotVolumeUsd: "$ 1.000.000,00",
                                 makerFee: 0.001,
                                 takerFee: 0.002,
-                                dateLaunched: "2017-07-14",
+                                dateLaunched: "Date launched: 14-07-2017",
                                 websiteUrl: "https://binance.com",
                                 twitterUrl: "@binance"
                             )
@@ -149,48 +149,6 @@ struct HomeViewModelTests {
         sut.didSelectRow(at: 0)
 
         #expect(doubles.coordinatorDelegateSpy.calledMethods == [.navigateToDetails(exchange)])
-    }
-
-    @Test("GIVEN a value WHEN formatPrice is called THEN returns formatted currency string",
-          arguments: [
-        (1000000.50, "1.000.000,50"),
-        (0.0, "0,00"),
-        (1234.5, "1.234,50")
-    ])
-    func testFormatPrice(value: Double, expectedString: String) {
-        let (sut, _) = makeSut()
-
-        let result = sut.formatPrice(value)
-
-        #expect(result.contains(expectedString))
-    }
-
-    @Test("GIVEN a valid ISO8601 date WHEN formatDate is called THEN returns localized short date")
-    func testFormatDateValid() {
-        let (sut, _) = makeSut()
-
-        let result = sut.formatDate("2017-07-14T00:00:00.000Z")
-
-        let expectedFormatter = DateFormatter()
-        expectedFormatter.dateStyle = .short
-        expectedFormatter.timeStyle = .none
-        expectedFormatter.locale = Locale.current
-
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let date = isoFormatter.date(from: "2017-07-14T00:00:00.000Z")!
-        let expected = expectedFormatter.string(from: date)
-
-        #expect(result == expected)
-    }
-
-    @Test("GIVEN an invalid date string WHEN formatDate is called THEN returns the original string")
-    func testFormatDateInvalid() {
-        let (sut, _) = makeSut()
-
-        let result = sut.formatDate("not-a-date")
-
-        #expect(result == "not-a-date")
     }
 
     @Test("GIVEN loaded exchanges WHEN item is requested at valid index THEN returns correct exchange")
@@ -256,8 +214,10 @@ extension HomeViewModelTests {
         let serviceSpy = HomeServiceProtocolSpy()
         let delegateSpy = HomeViewModelDelegateSpy()
         let coordinatorDelegateSpy = HomeViewModelCoordinatorDelegateSpy()
-
-        let sut = HomeViewModel(service: serviceSpy)
+        let ptBRLocale = Locale(identifier: "pt_BR")
+        let sut = HomeViewModel(service: serviceSpy,
+                                stringFormatter: .init(locale: ptBRLocale),
+                                numbersFormatter: .init(locale: ptBRLocale))
         sut.delegate = delegateSpy
         sut.coordinatorDelegate = coordinatorDelegateSpy
 

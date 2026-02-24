@@ -13,7 +13,7 @@ public struct Exchange: Equatable, Identifiable {
     public let name: String
     public let description: String?
     public let logo: String
-    public let spotVolumeUsd: Double?
+    public let spotVolumeUsd: String
     public let makerFee: Double
     public let takerFee: Double
     public let dateLaunched: String
@@ -26,7 +26,7 @@ public struct Exchange: Equatable, Identifiable {
                 name: String,
                 description: String? = nil,
                 logo: String,
-                spotVolumeUsd: Double? = nil,
+                spotVolumeUsd: String = "",
                 makerFee: Double,
                 takerFee: Double,
                 dateLaunched: String,
@@ -50,7 +50,7 @@ public struct Exchange: Equatable, Identifiable {
         self.name = summary.name
         self.description = nil
         self.logo = ""
-        self.spotVolumeUsd = nil
+        self.spotVolumeUsd = ""
         self.makerFee = 0.0
         self.takerFee = 0.0
         self.dateLaunched = ""

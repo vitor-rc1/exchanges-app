@@ -5,9 +5,10 @@ let workspace = Workspace(
     name: "ExchangesApp",
     projects: [
         "./Projects/App",
+        "./Projects/Home",
+        "./Projects/Helpers",
         "./Projects/DependencyInjection",
         "./Projects/DesignSystem",
-        "./Projects/Home",
         "./Projects/Detail"
     ],
     schemes: [],

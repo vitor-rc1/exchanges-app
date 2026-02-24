@@ -28,6 +28,8 @@ jobs:
               - 'Projects/Home/**'
             detail:
               - 'Projects/Detail/**'
+            helpers:
+              - 'Projects/Helpers/**'
       - name: Generate matrix
         id: matrix
         run: |
@@ -50,6 +52,10 @@ jobs:
 
           if [ "${{ steps.filter.outputs.detail }}" == "true" ]; then
             targets+=("Detail")
+          fi
+
+          if [ "${{ steps.filter.outputs.helpers }}" == "true" ]; then
+            targets+=("Helpers")
           fi
           
           if [ ${#targets[@]} -gt 0 ]; then

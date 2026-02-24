@@ -158,7 +158,7 @@ extension DetailViewModelTests {
         name: String = "Binance",
         description: String? = "Binance Exchange",
         logo: String = "https://logo.url",
-        spotVolumeUsd: Double? = 1000000.0,
+        spotVolumeUsd: String = "$ 1.000.000,0",
         makerFee: Double = 0.1,
         takerFee: Double = 0.2,
         dateLaunched: String = "2017-07-14",

@@ -6,8 +6,9 @@
 //
 //
 
-import HomeInterfaces
 import Foundation
+import Helpers
+import HomeInterfaces
 
 @MainActor
 final class HomeViewModel: HomeViewModelProtocol {
@@ -15,6 +16,8 @@ final class HomeViewModel: HomeViewModelProtocol {
     weak var coordinatorDelegate: HomeViewModelCoordinatorDelegate?
 
     private let service: HomeServiceProtocol
+    private let stringFormatter: StringFormatter
+    private let numbersFormatter: NumbersFormatter
     private let defaultMessage = "Failed to load data. Press try again or check your connection."
 
     private var currentPage = 1
@@ -28,8 +31,12 @@ final class HomeViewModel: HomeViewModelProtocol {
 
     var numberOfItems: Int { exchanges.count }
 
-    init(service: HomeServiceProtocol) {
+    init(service: HomeServiceProtocol,
+         stringFormatter: StringFormatter,
+         numbersFormatter: NumbersFormatter) {
         self.service = service
+        self.stringFormatter = stringFormatter
+        self.numbersFormatter = numbersFormatter
     }
 
     func loadData() {
@@ -107,7 +114,6 @@ final class HomeViewModel: HomeViewModelProtocol {
     }
 
     func didSelectRow(at index: Int) {
-        guard exchanges.indices.contains(index) else { return }
         coordinatorDelegate?.navigateToDetails(of: exchanges[index])
     }
 
@@ -116,42 +122,11 @@ final class HomeViewModel: HomeViewModelProtocol {
                         name: item.name,
                         description: detail.description,
                         logo: detail.logo,
-                        spotVolumeUsd: detail.spotVolumeUsd,
+                        spotVolumeUsd: numbersFormatter.formatPrice(detail.spotVolumeUsd),
                         makerFee: detail.makerFee,
                         takerFee: detail.takerFee,
-                        dateLaunched: detail.dateLaunched,
+                        dateLaunched: "Date launched: \(stringFormatter.formatDate(detail.dateLaunched))",
                         websiteUrl: detail.urls.website.first,
                         twitterUrl: detail.urls.twitter.first)
-    }
-
-    func formatPrice(_ value: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencySymbol = "$"
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        formatter.usesGroupingSeparator = true
-        formatter.groupingSeparator = "."
-        formatter.decimalSeparator = ","
-
-        formatter.locale = Locale(identifier: "pt_BR")
-
-        return formatter.string(from: NSNumber(value: value)) ?? "$ 0,00"
-    }
-
-    func formatDate(_ date: String) -> String {
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
-        guard let date = isoFormatter.date(from: date) else {
-            return date
-        }
-
-        let displayFormatter = DateFormatter()
-        displayFormatter.dateStyle = .short
-        displayFormatter.timeStyle = .none
-        displayFormatter.locale = Locale.current
-
-        return displayFormatter.string(from: date)
     }
 }

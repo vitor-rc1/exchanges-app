@@ -10,6 +10,8 @@ let dependecies: [TargetDependency] = [
              path: "../DesignSystem"),
     .project(target: "DetailInterfaces",
              path: "../Detail"),
+    .project(target: "Helpers",
+             path: "../Helpers"),
     .external(name: "NetworkingInterfaces"),
 ]
 

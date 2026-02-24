@@ -146,7 +146,7 @@ extension DetailViewControllerTests {
             name: "Test Exchange",
             description: "Test Description",
             logoUrl: "https://test.com/logo.png",
-            spotVolumeUsd: 1000000,
+            spotVolumeUsd: "$ 1.000.000,0",
             makerFee: 0.1,
             takerFee: 0.2,
             dateLaunched: "2020-01-01",

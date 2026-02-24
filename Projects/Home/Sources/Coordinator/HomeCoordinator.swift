@@ -8,6 +8,7 @@
 
 import DependencyInjectionInterfaces
 import DetailInterfaces
+import Helpers
 import HomeInterfaces
 import NavigationInterfaces
 import NetworkingInterfaces
@@ -28,7 +29,9 @@ public final class HomeCoordinator: HomeCoordinating {
         let resolver = SharedContainer.shared.resolver()
         let networkService: NetworkServiceProtocol = resolver.resolve()
         let service = HomeService(networkService: networkService)
-        let viewModel = HomeViewModel(service: service)
+        let viewModel = HomeViewModel(service: service,
+                                      stringFormatter: .init(),
+                                      numbersFormatter: .init())
         viewModel.coordinatorDelegate = self
         let homeVC = HomeViewController(viewModel: viewModel)
         navigationController.pushViewController(homeVC, animated: false)

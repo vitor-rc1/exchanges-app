@@ -100,7 +100,7 @@ extension DetailCoordinatorTests {
             name: "Binance",
             description: "Binance Exchange",
             logo: "https://logo.url",
-            spotVolumeUsd: 1000000.0,
+            spotVolumeUsd: "$ 1.000.000,0",
             makerFee: 0.1,
             takerFee: 0.2,
             dateLaunched: "2017-07-14",
