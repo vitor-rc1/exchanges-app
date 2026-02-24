@@ -94,7 +94,6 @@ struct HomeViewControllerTests {
         #expect(cell is InfoCell)
         #expect(viewModelSpy.calledMethods.contains(.item))
         #expect(viewModelSpy.calledMethods.contains(.formatPrice))
-        #expect(viewModelSpy.calledMethods.contains(.formatDate))
     }
 
     @Test("GIVEN viewController WHEN tableView didSelectRow is called THEN calls viewModel didSelectRow")

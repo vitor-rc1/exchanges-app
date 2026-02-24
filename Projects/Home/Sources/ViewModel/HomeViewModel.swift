@@ -138,20 +138,4 @@ final class HomeViewModel: HomeViewModelProtocol {
 
         return formatter.string(from: NSNumber(value: value)) ?? "$ 0,00"
     }
-
-    func formatDate(_ date: String) -> String {
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-
-        guard let date = isoFormatter.date(from: date) else {
-            return date
-        }
-
-        let displayFormatter = DateFormatter()
-        displayFormatter.dateStyle = .short
-        displayFormatter.timeStyle = .none
-        displayFormatter.locale = Locale.current
-
-        return displayFormatter.string(from: date)
-    }
 }

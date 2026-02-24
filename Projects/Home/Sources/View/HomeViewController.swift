@@ -7,6 +7,7 @@
 //
 
 import DesignSystem
+import Helpers
 import UIKit
 
 class HomeViewController: UIViewController {
@@ -143,7 +144,7 @@ extension HomeViewController: UITableViewDataSource, UITableViewDelegate {
                 cell.configure(state: .partialLoaded(.init(title: item.name)))
             } else {
                 let volPrice = "Vol: \(viewModel.formatPrice(item.spotVolumeUsd ?? 0.0))"
-                let dateLaunched = "Date launched: \(viewModel.formatDate(item.dateLaunched))"
+                let dateLaunched = "Date launched: \(item.dateLaunched.formatDate())"
                 cell.configure(state: .loaded(.init(url: item.logo,
                                                     title: item.name,
                                                     subtitle: volPrice,

@@ -19,5 +19,4 @@ protocol HomeViewModelProtocol: AnyObject {
     func item(at index: Int) -> Exchange
     func didSelectRow(at index: Int)
     func formatPrice(_ value: Double) -> String
-    func formatDate(_ date: String) -> String
 }

@@ -20,7 +20,6 @@ final class HomeViewModelSpy: HomeViewModelProtocol {
         case item
         case didSelectRow
         case formatPrice
-        case formatDate
     }
 
     var calledMethods: [Method] = []
@@ -43,11 +42,6 @@ final class HomeViewModelSpy: HomeViewModelProtocol {
 
     func formatPrice(_ value: Double) -> String {
         calledMethods.append(.formatPrice)
-        return ""
-    }
-
-    func formatDate(_ date: String) -> String {
-        calledMethods.append(.formatDate)
         return ""
     }
 }

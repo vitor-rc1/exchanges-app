@@ -165,34 +165,6 @@ struct HomeViewModelTests {
         #expect(result.contains(expectedString))
     }
 
-    @Test("GIVEN a valid ISO8601 date WHEN formatDate is called THEN returns localized short date")
-    func testFormatDateValid() {
-        let (sut, _) = makeSut()
-
-        let result = sut.formatDate("2017-07-14T00:00:00.000Z")
-
-        let expectedFormatter = DateFormatter()
-        expectedFormatter.dateStyle = .short
-        expectedFormatter.timeStyle = .none
-        expectedFormatter.locale = Locale.current
-
-        let isoFormatter = ISO8601DateFormatter()
-        isoFormatter.formatOptions = [.withInternetDateTime, .withFractionalSeconds]
-        let date = isoFormatter.date(from: "2017-07-14T00:00:00.000Z")!
-        let expected = expectedFormatter.string(from: date)
-
-        #expect(result == expected)
-    }
-
-    @Test("GIVEN an invalid date string WHEN formatDate is called THEN returns the original string")
-    func testFormatDateInvalid() {
-        let (sut, _) = makeSut()
-
-        let result = sut.formatDate("not-a-date")
-
-        #expect(result == "not-a-date")
-    }
-
     @Test("GIVEN loaded exchanges WHEN item is requested at valid index THEN returns correct exchange")
     func testItemAtIndex() async throws {
         let (sut, doubles) = makeSut()
