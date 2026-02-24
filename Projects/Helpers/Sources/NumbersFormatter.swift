@@ -14,7 +14,8 @@ public struct NumbersFormatter {
         self.locale = locale
     }
 
-    public func formatPrice(_ value: Double) -> String {
+    public func formatPrice(_ value: Double?) -> String {
+        guard let value else { return "-" }
         let formatter = NumberFormatter()
         formatter.numberStyle = .currency
         formatter.currencySymbol = "$"

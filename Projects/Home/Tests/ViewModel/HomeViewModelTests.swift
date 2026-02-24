@@ -151,20 +151,6 @@ struct HomeViewModelTests {
         #expect(doubles.coordinatorDelegateSpy.calledMethods == [.navigateToDetails(exchange)])
     }
 
-    @Test("GIVEN a value WHEN formatPrice is called THEN returns formatted currency string",
-          arguments: [
-        (1000000.50, "1.000.000,50"),
-        (0.0, "0,00"),
-        (1234.5, "1.234,50")
-    ])
-    func testFormatPrice(value: Double, expectedString: String) {
-        let (sut, _) = makeSut()
-
-        let result = sut.formatPrice(value)
-
-        #expect(result.contains(expectedString))
-    }
-
     @Test("GIVEN loaded exchanges WHEN item is requested at valid index THEN returns correct exchange")
     func testItemAtIndex() async throws {
         let (sut, doubles) = makeSut()
@@ -230,7 +216,8 @@ extension HomeViewModelTests {
         let coordinatorDelegateSpy = HomeViewModelCoordinatorDelegateSpy()
         let ptBRLocale = Locale(identifier: "pt_BR")
         let sut = HomeViewModel(service: serviceSpy,
-                                stringFormatter: .init(locale: ptBRLocale))
+                                stringFormatter: .init(locale: ptBRLocale),
+                                numbersFormatter: .init(locale: ptBRLocale))
         sut.delegate = delegateSpy
         sut.coordinatorDelegate = coordinatorDelegateSpy
 

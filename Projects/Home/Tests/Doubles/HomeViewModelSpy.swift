@@ -19,7 +19,6 @@ final class HomeViewModelSpy: HomeViewModelProtocol {
         case loadData
         case item
         case didSelectRow
-        case formatPrice
     }
 
     var calledMethods: [Method] = []
@@ -38,10 +37,5 @@ final class HomeViewModelSpy: HomeViewModelProtocol {
 
     func didSelectRow(at index: Int) {
         calledMethods.append(.didSelectRow)
-    }
-
-    func formatPrice(_ value: Double) -> String {
-        calledMethods.append(.formatPrice)
-        return ""
     }
 }

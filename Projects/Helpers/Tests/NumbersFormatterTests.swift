@@ -41,4 +41,13 @@ struct NumbersFormatterTests {
 
         #expect(result.contains(expectedString))
     }
+
+    @Test("GIVEN a nil value WHEN formatPrice THEN returns default value")
+    func testNilValue() {
+        let formatter = NumbersFormatter()
+        
+        let result = formatter.formatPrice(nil)
+        
+        #expect(result == "-")
+    }
 }

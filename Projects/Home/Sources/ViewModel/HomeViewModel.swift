@@ -17,6 +17,7 @@ final class HomeViewModel: HomeViewModelProtocol {
 
     private let service: HomeServiceProtocol
     private let stringFormatter: StringFormatter
+    private let numbersFormatter: NumbersFormatter
     private let defaultMessage = "Failed to load data. Press try again or check your connection."
 
     private var currentPage = 1
@@ -31,9 +32,11 @@ final class HomeViewModel: HomeViewModelProtocol {
     var numberOfItems: Int { exchanges.count }
 
     init(service: HomeServiceProtocol,
-         stringFormatter: StringFormatter) {
+         stringFormatter: StringFormatter,
+         numbersFormatter: NumbersFormatter) {
         self.service = service
         self.stringFormatter = stringFormatter
+        self.numbersFormatter = numbersFormatter
     }
 
     func loadData() {
@@ -119,26 +122,11 @@ final class HomeViewModel: HomeViewModelProtocol {
                         name: item.name,
                         description: detail.description,
                         logo: detail.logo,
-                        spotVolumeUsd: detail.spotVolumeUsd,
+                        spotVolumeUsd: numbersFormatter.formatPrice(detail.spotVolumeUsd),
                         makerFee: detail.makerFee,
                         takerFee: detail.takerFee,
                         dateLaunched: "Date launched: \(stringFormatter.formatDate(detail.dateLaunched))",
                         websiteUrl: detail.urls.website.first,
                         twitterUrl: detail.urls.twitter.first)
-    }
-
-    func formatPrice(_ value: Double) -> String {
-        let formatter = NumberFormatter()
-        formatter.numberStyle = .currency
-        formatter.currencySymbol = "$"
-        formatter.minimumFractionDigits = 2
-        formatter.maximumFractionDigits = 2
-        formatter.usesGroupingSeparator = true
-        formatter.groupingSeparator = "."
-        formatter.decimalSeparator = ","
-
-        formatter.locale = Locale(identifier: "pt_BR")
-
-        return formatter.string(from: NSNumber(value: value)) ?? "$ 0,00"
     }
 }
